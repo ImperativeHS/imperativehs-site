@@ -1,0 +1,95 @@
+---
+import ChoiceGroup from '@/components/forms/ChoiceGroup.astro';
+import ConsentCheckbox from '@/components/forms/ConsentCheckbox.astro';
+import FormShell from '@/components/forms/FormShell.astro';
+import SelectField from '@/components/forms/SelectField.astro';
+import TextField from '@/components/forms/TextField.astro';
+import ContactCard from '@/components/sections/ContactCard.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+import Section from '@/components/ui/Section.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import {
+  BEST_TIME_OPTIONS,
+  CONTACT_METHOD_OPTIONS,
+  FOR_WHOM_OPTIONS,
+  SERVICE_OPTIONS,
+} from '@/lib/forms/definitions';
+import { breadcrumbSchema } from '@/lib/seo/structured-data';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Request an Appointment', path: '/request-appointment/' },
+];
+---
+
+<BaseLayout
+  title="Request an Appointment"
+  description="Request an appointment with Imperative Healthcare Services in Hyattsville, MD. Share a few contact details and our team will reach out to schedule your visit."
+  jsonLd={[breadcrumbSchema(crumbs)]}
+>
+  <PageHero
+    title="Request an appointment"
+    lead="Share a few details and our team will contact you to schedule your first visit. It takes about a minute."
+    breadcrumbs={crumbs}
+  />
+
+  <Section spacing="sm">
+    <div class="grid gap-10 lg:grid-cols-[1fr_22rem]">
+      <FormShell name="appointment" submitLabel="Send request">
+        <ChoiceGroup
+          name="forWhom"
+          legend="Who is the appointment for?"
+          options={FOR_WHOM_OPTIONS}
+          value="self"
+          required
+        />
+        <SelectField
+          name="service"
+          label="Which service are you interested in?"
+          options={SERVICE_OPTIONS}
+          required
+        />
+        <div class="grid gap-6 sm:grid-cols-2">
+          <TextField
+            name="name"
+            label="Your name"
+            autocomplete="name"
+            required
+            maxlength={120}
+            class="sm:col-span-2"
+          />
+          <TextField
+            name="phone"
+            label="Phone"
+            type="tel"
+            autocomplete="tel"
+            inputmode="tel"
+            required
+            maxlength={30}
+          />
+          <TextField name="email" label="Email" type="email" autocomplete="email" maxlength={200} />
+        </div>
+        <ChoiceGroup
+          name="contactMethod"
+          legend="How should we contact you?"
+          options={CONTACT_METHOD_OPTIONS}
+          value="phone"
+          required
+        />
+        <ChoiceGroup
+          name="bestTime"
+          legend="Best time to reach you"
+          options={BEST_TIME_OPTIONS}
+          value="any"
+        />
+        <ConsentCheckbox>
+          I agree that Imperative Healthcare Services may contact me by my chosen method about scheduling.
+        </ConsentCheckbox>
+      </FormShell>
+
+      <div class="space-y-6 lg:sticky lg:top-28 lg:self-start">
+        <ContactCard />
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

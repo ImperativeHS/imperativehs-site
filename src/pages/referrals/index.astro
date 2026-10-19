@@ -1,0 +1,92 @@
+---
+import ConsentCheckbox from '@/components/forms/ConsentCheckbox.astro';
+import FormShell from '@/components/forms/FormShell.astro';
+import SelectField from '@/components/forms/SelectField.astro';
+import TextField from '@/components/forms/TextField.astro';
+import ContactCard from '@/components/sections/ContactCard.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+import Section from '@/components/ui/Section.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { SERVICE_OPTIONS } from '@/lib/forms/definitions';
+import { breadcrumbSchema } from '@/lib/seo/structured-data';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Referrals', path: '/referrals/' },
+];
+---
+
+<BaseLayout
+  title="Refer a Client"
+  description="Refer a client or loved one to Imperative Healthcare Services for outpatient mental health care, PRP, substance use treatment, or in-home RSA services."
+  jsonLd={[breadcrumbSchema(crumbs)]}
+>
+  <PageHero
+    title="Refer a client or loved one"
+    lead="Everyone deserves compassionate support. Clinicians, case managers, schools, and families can use this form, and our team will reach out to the person you refer."
+    breadcrumbs={crumbs}
+  />
+
+  <Section spacing="sm">
+    <div class="grid gap-10 lg:grid-cols-[1fr_22rem]">
+      <FormShell name="referral" submitLabel="Send referral">
+        <fieldset class="space-y-6">
+          <legend class="font-display text-xl font-semibold text-brand-900">About you</legend>
+          <div class="grid gap-6 sm:grid-cols-2">
+            <TextField name="referrerName" label="Your name" autocomplete="name" required maxlength={120} />
+            <TextField
+              name="referrerOrganization"
+              label="Organization"
+              autocomplete="organization"
+              maxlength={160}
+            />
+            <TextField
+              name="referrerPhone"
+              label="Your phone"
+              type="tel"
+              autocomplete="tel"
+              inputmode="tel"
+              required
+              maxlength={30}
+            />
+            <TextField
+              name="referrerEmail"
+              label="Your email"
+              type="email"
+              autocomplete="email"
+              required
+              maxlength={200}
+            />
+          </div>
+        </fieldset>
+
+        <fieldset class="space-y-6 border-t border-line pt-6">
+          <legend class="font-display text-xl font-semibold text-brand-900">
+            About the person you’re referring
+          </legend>
+          <div class="grid gap-6 sm:grid-cols-2">
+            <TextField name="clientName" label="Their name" autocomplete="off" required maxlength={120} />
+            <TextField
+              name="clientPhone"
+              label="Their phone"
+              type="tel"
+              autocomplete="off"
+              inputmode="tel"
+              required
+              maxlength={30}
+            />
+          </div>
+          <SelectField name="service" label="Service needed" options={SERVICE_OPTIONS} required />
+        </fieldset>
+
+        <ConsentCheckbox>
+          The person I’m referring has agreed to be contacted by Imperative Healthcare Services.
+        </ConsentCheckbox>
+      </FormShell>
+
+      <div class="space-y-6 lg:sticky lg:top-28 lg:self-start">
+        <ContactCard />
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

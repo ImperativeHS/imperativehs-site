@@ -1,0 +1,56 @@
+---
+import ContactCard from '@/components/sections/ContactCard.astro';
+import CtaBand from '@/components/sections/CtaBand.astro';
+import InsuranceList from '@/components/sections/InsuranceList.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+import Section from '@/components/ui/Section.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { breadcrumbSchema } from '@/lib/seo/structured-data';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Insurance', path: '/insurance/' },
+];
+---
+
+<BaseLayout
+  title="Insurance Accepted"
+  description="Imperative Healthcare Services accepts Maryland Medicaid, Medicare, CareFirst, Aetna, Cigna, UnitedHealthcare, TRICARE, and more. Call to verify your coverage."
+  jsonLd={[breadcrumbSchema(crumbs)]}
+>
+  <PageHero
+    title="Insurance we accept"
+    lead="We want cost to be one less thing to worry about. We accept the plans below and are happy to help you check your coverage."
+    breadcrumbs={crumbs}
+  />
+
+  <Section spacing="sm">
+    <div class="grid gap-12 lg:grid-cols-[1fr_22rem]">
+      <div>
+        <h2 class="text-2xl font-semibold">Accepted plans</h2>
+        <div class="mt-6">
+          <InsuranceList />
+        </div>
+
+        <div class="prose-ihs mt-12">
+          <h2>Before your first visit</h2>
+          <ul>
+            <li>Have your insurance card handy when you call or when we call you back.</li>
+            <li>
+              Coverage varies by plan and service. We’ll help you confirm what’s covered before you’re seen.
+            </li>
+            <li>
+              Don’t see your plan listed? Call us — we may still be able to help or point you in the right
+              direction.
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="lg:sticky lg:top-28 lg:self-start">
+        <ContactCard />
+      </div>
+    </div>
+  </Section>
+
+  <CtaBand />
+</BaseLayout>

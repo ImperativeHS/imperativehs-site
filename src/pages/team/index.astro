@@ -1,0 +1,125 @@
+---
+import { Image } from 'astro:assets';
+import headshot from '@/assets/images/faramade-eruanga.jpg';
+import CtaBand from '@/components/sections/CtaBand.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+import Icon from '@/components/ui/Icon.astro';
+import Section from '@/components/ui/Section.astro';
+import { site } from '@/config/site';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { ORG_ID, breadcrumbSchema } from '@/lib/seo/structured-data';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Our Team', path: '/team/' },
+];
+
+const credentials = [
+  'Doctor of Nursing Practice (DNP) with honors, University of Massachusetts Global',
+  'Dual board certification in psychiatric-mental health and family nursing',
+  'Master’s in nursing, Maryville University',
+  'Clinical experience in oncology, orthopedics, and pain management',
+];
+const focus = [
+  'Psychiatric assessment',
+  'Medication management',
+  'Connection to therapy and counseling',
+  'Complementary wellness approaches',
+];
+
+const personSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Faramade Eruanga',
+  honorificPrefix: 'Dr.',
+  honorificSuffix: 'DNP, PMHNP-BC, FNP-C',
+  jobTitle: 'Medical Director',
+  worksFor: { '@id': ORG_ID },
+  url: new URL('/team/', site.url).href,
+};
+---
+
+<BaseLayout
+  title="Our Team"
+  description="Meet Dr. Faramade Eruanga, DNP, Medical Director of Imperative Healthcare Services, board certified in psychiatric-mental health and family nursing."
+  jsonLd={[breadcrumbSchema(crumbs), personSchema]}
+>
+  <PageHero title="Meet our team" breadcrumbs={crumbs} />
+
+  <Section spacing="sm">
+    <article class="grid gap-12 lg:grid-cols-[22rem_1fr]">
+      <div class="lg:sticky lg:top-28 lg:self-start">
+        <Image
+          src={headshot}
+          alt="Dr. Faramade Eruanga in a white coat"
+          widths={[352, 704]}
+          sizes="(min-width: 1024px) 352px, 100vw"
+          class="aspect-[4/5] w-full rounded-3xl object-cover object-top shadow-sm"
+        />
+        <div class="mt-5">
+          <h2 class="text-2xl font-semibold">Dr. Faramade (Fara) Eruanga</h2>
+          <p class="text-muted">DNP, PMHNP-BC, FNP-C · Medical Director</p>
+        </div>
+      </div>
+
+      <div class="prose-ihs prose-lg">
+        <p class="lead">
+          Dr. Faramade (Fara) Eruanga is the medical director of Imperative Healthcare Services, bringing more
+          than 15 years of mental health expertise to her compassionate practice.
+        </p>
+        <p>
+          After witnessing firsthand the barriers many people face in accessing affordable mental health care,
+          Dr. Eruanga made it her mission to use her diverse medical background to help people heal and
+          thrive.
+        </p>
+
+        <h3>Education and training</h3>
+        <ul>
+          {credentials.map((c) => (
+            <li>{c}</li>
+          ))}
+        </ul>
+
+        <h3>Her approach</h3>
+        <p>
+          Dr. Eruanga believes mental health care should address the whole person — their background, values,
+          and aspirations alongside clinical symptoms. At Imperative Healthcare Services, she has built a
+          judgment-free environment where clients feel comfortable being themselves while working together
+          toward their goals.
+        </p>
+        <ul>
+          {focus.map((f) => (
+            <li>{f}</li>
+          ))}
+        </ul>
+
+        <h3>What sets her apart</h3>
+        <p>
+          Those who work with Dr. Eruanga highlight her empathy, compassion, and active listening. She finds
+          joy in easing suffering and helping each person she works with build stability and hope.
+        </p>
+
+        <blockquote>
+          <p>
+            “My goal is to provide a trusted home for mental health healing. We laugh together, cry together,
+            and don’t give up on one another.”
+          </p>
+        </blockquote>
+      </div>
+    </article>
+  </Section>
+
+  <Section tone="tint" spacing="sm">
+    <div class="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+      <span class="flex size-12 items-center justify-center rounded-2xl bg-white text-brand-700 ring-1 ring-brand-100">
+        <Icon name="users" class="size-6" />
+      </span>
+      <p class="max-w-3xl text-lg text-ink">
+        Dr. Eruanga leads a team of licensed therapists, counselors, and trained caregivers across our mental
+        health, rehabilitation, substance use, and in-home care programs.
+      </p>
+    </div>
+  </Section>
+
+  <CtaBand />
+</BaseLayout>

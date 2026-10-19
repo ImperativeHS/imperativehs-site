@@ -1,0 +1,55 @@
+---
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import Section from '@/components/ui/Section.astro';
+import { site } from '@/config/site';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Thank You" description="We received your submission." noindex>
+  <Section spacing="lg">
+    <div class="mx-auto max-w-xl text-center">
+      <span class="mx-auto flex size-16 items-center justify-center rounded-full bg-brand-100 text-brand-700">
+        <Icon name="check" class="size-8" strokeWidth={2.5} />
+      </span>
+      <h1 class="mt-6 text-4xl font-semibold" data-thanks-title>
+        Thank you — we received your request
+      </h1>
+      <p class="mt-4 text-lg text-muted" data-thanks-body>
+        Our team will reach out soon using the contact method you chose. If you need to speak with someone
+        sooner, please call us at{' '}
+        <a href={site.phone.href} class="font-semibold text-brand-700 underline">
+          {site.phone.display}
+        </a>
+        .
+      </p>
+      <p class="mt-6 rounded-2xl bg-brand-50 p-4 text-sm text-ink">
+        If you are in crisis, call or text{' '}
+        <a href={site.crisis.lifeline.href} class="font-semibold underline">
+          988
+        </a>{' '}
+        any time. In an emergency, call{' '}
+        <a href={site.crisis.emergency.href} class="font-semibold underline">
+          911
+        </a>
+        .
+      </p>
+      <div class="mt-8 flex justify-center gap-3">
+        <Button href="/" variant="secondary">
+          Back to home
+        </Button>
+        <Button href="/services/" variant="ghost">
+          Explore services
+        </Button>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>
+
+<script>
+  // Adjust the copy for general messages (the page is static, so this runs client-side).
+  if (new URLSearchParams(location.search).get('form') === 'contact') {
+    const title = document.querySelector('[data-thanks-title]');
+    if (title) title.textContent = 'Thank you — your message was sent';
+  }
+</script>

@@ -1,0 +1,71 @@
+---
+import FormShell from '@/components/forms/FormShell.astro';
+import TextField from '@/components/forms/TextField.astro';
+import ContactCard from '@/components/sections/ContactCard.astro';
+import PageHero from '@/components/sections/PageHero.astro';
+import Button from '@/components/ui/Button.astro';
+import Section from '@/components/ui/Section.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { breadcrumbSchema } from '@/lib/seo/structured-data';
+
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Contact', path: '/contact/' },
+];
+---
+
+<BaseLayout
+  title="Contact Us"
+  description="Contact Imperative Healthcare Services at 4301 Garden City Dr., Suite 302, Hyattsville, MD 20785. Call (301) 357-4794 or send us a message."
+  jsonLd={[breadcrumbSchema(crumbs)]}
+>
+  <PageHero
+    title="Contact us"
+    lead="We’d love to hear from you. For appointments, the fastest way is to call or use our appointment request form."
+    breadcrumbs={crumbs}
+  >
+    <Button href="/request-appointment/" icon="calendar">
+      Request an appointment
+    </Button>
+  </PageHero>
+
+  <Section spacing="sm">
+    <div class="grid gap-10 lg:grid-cols-[22rem_1fr]">
+      <div class="lg:sticky lg:top-28 lg:self-start">
+        <ContactCard />
+      </div>
+      <div>
+        <h2 class="mb-6 text-2xl font-semibold">Send a message</h2>
+        <FormShell name="contact" submitLabel="Send message">
+          <div class="grid gap-6 sm:grid-cols-2">
+            <TextField
+              name="name"
+              label="Name"
+              autocomplete="name"
+              required
+              maxlength={120}
+              class="sm:col-span-2"
+            />
+            <TextField
+              name="email"
+              label="Email"
+              type="email"
+              autocomplete="email"
+              required
+              maxlength={200}
+            />
+            <TextField
+              name="phone"
+              label="Phone"
+              type="tel"
+              autocomplete="tel"
+              inputmode="tel"
+              maxlength={30}
+            />
+          </div>
+          <TextField name="message" label="Message" rows={5} required maxlength={2000} />
+        </FormShell>
+      </div>
+    </div>
+  </Section>
+</BaseLayout>

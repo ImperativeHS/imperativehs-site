@@ -1,0 +1,51 @@
+---
+import PageHero from '@/components/sections/PageHero.astro';
+import Section from '@/components/ui/Section.astro';
+import { site } from '@/config/site';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+// TODO(content): have this reviewed, and link or publish the practice's
+// HIPAA Notice of Privacy Practices here (covered entities must post it on their website).
+const lastUpdated = 'October 2026';
+---
+
+<BaseLayout
+  title="Website Privacy"
+  description="How the Imperative Healthcare Services website handles the information you share with us."
+>
+  <PageHero title="Website privacy" lead={`Last updated ${lastUpdated}`} />
+
+  <Section spacing="sm">
+    <div class="prose-ihs prose-lg max-w-3xl">
+      <h2>What this website collects</h2>
+      <p>
+        When you submit an appointment request, referral, or message, we receive the details you enter (such
+        as your name, phone number, email address, and the service you’re interested in). We use this
+        information only to respond to you and to schedule care.
+      </p>
+      <p>
+        Please don’t include medical details in website forms. We’ll discuss your needs by phone or in person.
+      </p>
+
+      <h2>No advertising trackers</h2>
+      <p>
+        This website does not use advertising pixels or tracking cookies, and we do not sell or share your
+        information with advertisers. We may use privacy-friendly analytics that count page visits without
+        identifying you.
+      </p>
+
+      <h2>Your health information</h2>
+      <p>
+        Health information you share with us as a patient is protected under HIPAA. To request a copy of our
+        Notice of Privacy Practices, call us at <a href={site.phone.href}>{site.phone.display}</a> or email{' '}
+        <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+
+      <h2>Questions</h2>
+      <p>
+        If you have questions about this page or how we handle your information, contact us at{' '}
+        <a href={`mailto:${site.email}`}>{site.email}</a>.
+      </p>
+    </div>
+  </Section>
+</BaseLayout>

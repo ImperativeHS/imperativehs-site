@@ -1,0 +1,44 @@
+---
+import PageHero from '@/components/sections/PageHero.astro';
+import Section from '@/components/ui/Section.astro';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import { formatDate, getPosts, postPath } from '@/lib/content';
+import { breadcrumbSchema } from '@/lib/seo/structured-data';
+
+const posts = await getPosts();
+const crumbs = [
+  { name: 'Home', path: '/' },
+  { name: 'Blog', path: '/blog/' },
+];
+---
+
+<BaseLayout
+  title="Mental Health Blog"
+  description="Articles on anxiety, depression, trauma, relationships, recovery, and everyday mental wellness from Imperative Healthcare Services."
+  jsonLd={[breadcrumbSchema(crumbs)]}
+>
+  <PageHero
+    title="Mental health blog"
+    lead="Practical guidance on mental health, recovery, and wellness for individuals and families."
+    breadcrumbs={crumbs}
+  />
+
+  <Section spacing="sm">
+    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      {posts.map((post) => (
+        <li class="group relative flex flex-col rounded-3xl bg-white p-6 shadow-sm ring-1 ring-line transition hover:shadow-md hover:ring-brand-200">
+          <p class="text-xs font-semibold tracking-wide text-sky-brand-700 uppercase">{post.data.category}</p>
+          <h2 class="mt-3 text-xl font-semibold group-hover:text-brand-700">
+            <a href={postPath(post)} class="after:absolute after:inset-0 after:rounded-3xl">
+              {post.data.title}
+            </a>
+          </h2>
+          <p class="mt-3 line-clamp-3 flex-1 text-sm text-muted">{post.data.description}</p>
+          <p class="mt-5 text-xs text-muted">
+            <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+          </p>
+        </li>
+      ))}
+    </ul>
+  </Section>
+</BaseLayout>
