@@ -1,0 +1,50 @@
+---
+import { site } from '@/config/site';
+
+export interface SeoProps {
+  /** Page title. The site name is appended unless `fullTitle` is set. */
+  title: string;
+  description?: string;
+  /** Use `title` as-is (for the home page). */
+  fullTitle?: boolean;
+  /** Absolute or root-relative path to a 1200×630 image. */
+  image?: string;
+  type?: 'website' | 'article';
+  noindex?: boolean;
+  jsonLd?: Record<string, unknown>[];
+}
+
+const {
+  title,
+  description = site.defaultDescription,
+  fullTitle = false,
+  image = '/og-default.png',
+  type = 'website',
+  noindex = false,
+  jsonLd = [],
+} = Astro.props as SeoProps;
+
+const pageTitle = fullTitle ? title : `${title} | ${site.name}`;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+const imageUrl = new URL(image, Astro.site);
+---
+
+<title>{pageTitle}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={canonical} />
+{noindex && <meta name="robots" content="noindex, follow" />}
+
+<meta property="og:type" content={type} />
+<meta property="og:site_name" content={site.name} />
+<meta property="og:title" content={pageTitle} />
+<meta property="og:description" content={description} />
+<meta property="og:url" content={canonical} />
+<meta property="og:image" content={imageUrl} />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:locale" content="en_US" />
+<meta name="twitter:card" content="summary_large_image" />
+
+{jsonLd.map((data) => (
+  <script type="application/ld+json" set:html={JSON.stringify(data)} />
+))}

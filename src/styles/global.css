@@ -1,0 +1,74 @@
+@import 'tailwindcss';
+@plugin '@tailwindcss/typography';
+
+/*
+ * Design tokens. Brand purple and blue come from the IHS logo.
+ * Text colors on light backgrounds meet WCAG AA contrast.
+ */
+@theme {
+  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
+
+  --color-brand-50: #f8f3f9;
+  --color-brand-100: #f0e4f2;
+  --color-brand-200: #e0c8e5;
+  --color-brand-300: #c99fd1;
+  --color-brand-400: #ac6fb8;
+  --color-brand-500: #924d9f;
+  --color-brand-600: #7e3489; /* logo purple */
+  --color-brand-700: #682b72;
+  --color-brand-800: #55245d;
+  --color-brand-900: #3f1b45;
+  --color-brand-950: #28102c;
+
+  --color-sky-brand-400: #3bb0e6;
+  --color-sky-brand-500: #1e9bd7; /* logo blue — decorative use only on white */
+  --color-sky-brand-700: #0b6a99; /* text-safe blue */
+
+  --color-ink: #24182a;
+  --color-muted: #5c5163;
+  --color-surface: #fdfbfd;
+  --color-line: #e8e0eb;
+}
+
+@layer base {
+  html {
+    scroll-padding-top: 6rem;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    @apply bg-surface font-sans text-ink antialiased;
+    text-rendering: optimizeLegibility;
+  }
+
+  h1,
+  h2,
+  h3 {
+    @apply font-display text-brand-900;
+    font-optical-sizing: auto;
+    text-wrap: balance;
+  }
+
+  p {
+    text-wrap: pretty;
+  }
+
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-brand-600;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    html {
+      scroll-behavior: smooth;
+    }
+  }
+}
+
+@utility container-page {
+  @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+}
+
+@utility prose-ihs {
+  @apply prose max-w-none prose-slate prose-headings:font-display prose-headings:text-brand-900 prose-a:text-brand-700 prose-a:underline-offset-2 hover:prose-a:text-brand-900 prose-strong:text-ink prose-li:marker:text-brand-500;
+}

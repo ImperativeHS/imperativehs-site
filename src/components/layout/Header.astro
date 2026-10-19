@@ -1,0 +1,170 @@
+---
+import { Image } from 'astro:assets';
+import logo from '@/assets/images/logo.png';
+import Button from '@/components/ui/Button.astro';
+import Icon from '@/components/ui/Icon.astro';
+import { primaryNav } from '@/config/navigation';
+import { site } from '@/config/site';
+import { getServices, servicePath } from '@/lib/content';
+
+const services = (await getServices()).map((s) => ({ label: s.data.shortTitle, href: servicePath(s) }));
+const path = Astro.url.pathname;
+const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+---
+
+<header class="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85">
+  <div class="hidden bg-brand-800 text-sm text-brand-50 sm:block">
+    <div class="container-page flex items-center justify-between gap-4 py-1.5">
+      <p class="flex items-center gap-2">
+        <Icon name="clock" class="size-4 text-brand-200" />
+        Mon–Fri 9am–7pm · Saturdays by appointment
+      </p>
+      <p class="flex items-center gap-5">
+        <a href={`mailto:${site.email}`} class="hover:text-white hover:underline">
+          {site.email}
+        </a>
+        <a href={site.phone.href} class="font-semibold hover:text-white hover:underline">
+          {site.phone.display}
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <div class="container-page flex h-16 items-center justify-between gap-4 lg:h-20">
+    <a href="/" class="flex shrink-0 items-center" aria-label={`${site.name} — home`}>
+      <Image
+        src={logo}
+        alt=""
+        class="h-10 w-auto lg:h-12"
+        loading="eager"
+        widths={[160, 320]}
+        sizes="160px"
+      />
+    </a>
+
+    <nav aria-label="Main" class="hidden lg:block">
+      <ul class="flex items-center gap-1">
+        {primaryNav.map((item) =>
+          item.href === '/services/' ? (
+            <li class="group relative">
+              <a
+                href={item.href}
+                class="flex items-center gap-1 rounded-full px-3 py-2 text-[15px] font-medium text-ink hover:bg-brand-50 hover:text-brand-700 aria-[current=page]:text-brand-700"
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+                <Icon
+                  name="chevron-down"
+                  class="size-4 transition-transform group-focus-within:rotate-180 group-hover:rotate-180"
+                />
+              </a>
+              <div class="invisible absolute top-full left-0 pt-2 opacity-0 transition group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+                <ul class="w-72 rounded-2xl border border-line bg-white p-2 shadow-lg">
+                  {services.map((s) => (
+                    <li>
+                      <a
+                        href={s.href}
+                        class="block rounded-xl px-3 py-2.5 text-sm font-medium text-ink hover:bg-brand-50 hover:text-brand-700"
+                      >
+                        {s.label}
+                      </a>
+                    </li>
+                  ))}
+                  <li class="mt-1 border-t border-line pt-1">
+                    <a
+                      href="/services/"
+                      class="block rounded-xl px-3 py-2.5 text-sm font-semibold text-brand-700 hover:bg-brand-50"
+                    >
+                      All services
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </li>
+          ) : (
+            <li>
+              <a
+                href={item.href}
+                class="rounded-full px-3 py-2 text-[15px] font-medium text-ink hover:bg-brand-50 hover:text-brand-700 aria-[current=page]:text-brand-700"
+                aria-current={isCurrent(item.href) ? 'page' : undefined}
+              >
+                {item.label}
+              </a>
+            </li>
+          ),
+        )}
+      </ul>
+    </nav>
+
+    <div class="flex items-center gap-2">
+      <div class="hidden sm:block">
+        <Button href="/request-appointment/" icon="calendar">
+          Request appointment
+        </Button>
+      </div>
+
+      <!-- Mobile menu: a native <details> disclosure, so it works without JavaScript. -->
+      <details class="group/menu lg:hidden" data-mobile-menu>
+        <summary
+          class="flex size-11 cursor-pointer list-none items-center justify-center rounded-full text-brand-800 hover:bg-brand-50 [&::-webkit-details-marker]:hidden"
+          aria-label="Menu"
+        >
+          <Icon name="menu" class="size-6 group-open/menu:hidden" />
+          <Icon name="x" class="hidden size-6 group-open/menu:block" />
+        </summary>
+        <nav
+          aria-label="Mobile"
+          class="absolute inset-x-0 top-full max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-line bg-white shadow-lg"
+        >
+          <div class="container-page pt-4 pb-24 sm:pb-4">
+            <p class="px-3 pb-1 text-xs font-semibold tracking-wide text-muted uppercase">Services</p>
+            <ul class="mb-3">
+              {services.map((s) => (
+                <li>
+                  <a href={s.href} class="block rounded-xl px-3 py-3 font-medium hover:bg-brand-50">
+                    {s.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+            <ul class="border-t border-line pt-3">
+              {primaryNav
+                .filter((item) => item.href !== '/services/')
+                .map((item) => (
+                  <li>
+                    <a href={item.href} class="block rounded-xl px-3 py-3 font-medium hover:bg-brand-50">
+                      {item.label}
+                    </a>
+                  </li>
+                ))}
+            </ul>
+            <div class="mt-4 grid gap-2 border-t border-line pt-4">
+              <Button href="/request-appointment/" size="lg" icon="calendar">
+                Request appointment
+              </Button>
+              <Button href={site.phone.href} size="lg" variant="secondary" icon="phone">
+                Call {site.phone.display}
+              </Button>
+            </div>
+          </div>
+        </nav>
+      </details>
+    </div>
+  </div>
+</header>
+
+<script>
+  // Close the mobile menu after following an in-page link or pressing Escape.
+  const menu = document.querySelector<HTMLDetailsElement>('[data-mobile-menu]');
+  if (menu) {
+    menu.addEventListener('click', (e) => {
+      if ((e.target as HTMLElement).closest('a')) menu.open = false;
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && menu.open) {
+        menu.open = false;
+        menu.querySelector('summary')?.focus();
+      }
+    });
+  }
+</script>
