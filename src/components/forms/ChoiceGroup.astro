@@ -1,0 +1,38 @@
+---
+import type { Option } from '@/lib/forms/definitions';
+import FieldError from './FieldError.astro';
+
+interface Props {
+  name: string;
+  legend: string;
+  options: readonly Option[];
+  value?: string;
+  required?: boolean;
+  class?: string;
+}
+
+const { name, legend, options, value, required, class: className } = Astro.props;
+const id = `field-${name}`;
+---
+
+<fieldset data-field={name} class={className} aria-describedby={`${id}-error`}>
+  <legend class="text-sm font-semibold text-ink">{legend}</legend>
+  <div class="mt-2 flex flex-wrap gap-2">
+    {options.map((o, i) => (
+      <label class="cursor-pointer">
+        <input
+          type="radio"
+          name={name}
+          value={o.value}
+          checked={o.value === value}
+          required={required && i === 0}
+          class="peer sr-only"
+        />
+        <span class="inline-flex rounded-full bg-white px-4 py-2 text-sm font-medium text-ink ring-1 ring-line ring-inset peer-checked:bg-brand-600 peer-checked:text-white peer-checked:ring-brand-600 peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand-600 hover:ring-brand-300">
+          {o.label}
+        </span>
+      </label>
+    ))}
+  </div>
+  <FieldError id={`${id}-error`} />
+</fieldset>

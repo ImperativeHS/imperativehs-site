@@ -1,0 +1,27 @@
+---
+import FieldError from './FieldError.astro';
+
+interface Props {
+  name?: string;
+}
+
+const { name = 'consent' } = Astro.props;
+const id = `field-${name}`;
+---
+
+<div data-field={name}>
+  <label for={id} class="flex items-start gap-3 text-sm text-ink">
+    <input
+      id={id}
+      type="checkbox"
+      name={name}
+      required
+      aria-describedby={`${id}-error`}
+      class="mt-0.5 size-5 shrink-0 rounded border-line text-brand-600 accent-brand-600"
+    />
+    <span>
+      <slot />
+    </span>
+  </label>
+  <FieldError id={`${id}-error`} />
+</div>

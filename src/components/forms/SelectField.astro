@@ -1,0 +1,49 @@
+---
+import type { Option } from '@/lib/forms/definitions';
+import Icon from '@/components/ui/Icon.astro';
+import FieldError from './FieldError.astro';
+
+interface Props {
+  name: string;
+  label: string;
+  options: readonly Option[];
+  required?: boolean;
+  placeholder?: string;
+  value?: string;
+  class?: string;
+}
+
+const { name, label, options, required, placeholder = 'Select…', value, class: className } = Astro.props;
+const id = `field-${name}`;
+---
+
+<div data-field={name} class={className}>
+  <label for={id} class="block text-sm font-semibold text-ink">
+    {label}
+  </label>
+  <div class="relative mt-2">
+    <select
+      id={id}
+      name={name}
+      required={required}
+      aria-describedby={`${id}-error`}
+      class="block w-full appearance-none rounded-xl border-0 bg-white py-3 pr-10 pl-4 text-ink shadow-xs ring-1 ring-line ring-inset focus:ring-2 focus:ring-brand-600 aria-invalid:ring-2 aria-invalid:ring-red-600"
+    >
+      {!value && (
+        <option value="" disabled selected>
+          {placeholder}
+        </option>
+      )}
+      {options.map((o) => (
+        <option value={o.value} selected={o.value === value}>
+          {o.label}
+        </option>
+      ))}
+    </select>
+    <Icon
+      name="chevron-down"
+      class="pointer-events-none absolute top-1/2 right-3 size-5 -translate-y-1/2 text-muted"
+    />
+  </div>
+  <FieldError id={`${id}-error`} />
+</div>

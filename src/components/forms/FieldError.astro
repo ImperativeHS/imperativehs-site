@@ -1,0 +1,9 @@
+---
+interface Props {
+  id: string;
+}
+
+const { id } = Astro.props;
+---
+
+<p id={id} data-error class="mt-1.5 text-sm font-medium text-red-700" hidden></p>

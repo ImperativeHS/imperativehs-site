@@ -1,0 +1,66 @@
+---
+import Button from '@/components/ui/Button.astro';
+import { HONEYPOT_FIELD, type FormName } from '@/lib/forms/definitions';
+import { PUBLIC_TURNSTILE_SITE_KEY } from 'astro:env/client';
+import { site } from '@/config/site';
+
+interface Props {
+  name: FormName;
+  submitLabel: string;
+}
+
+const { name, submitLabel } = Astro.props;
+---
+
+<form
+  id="form"
+  method="post"
+  action={`/api/forms/${name}/`}
+  data-form={name}
+  class="space-y-6 rounded-3xl bg-white p-6 shadow-sm ring-1 ring-line sm:p-8"
+>
+  <div
+    data-form-status
+    role="alert"
+    aria-live="assertive"
+    class="hidden rounded-2xl bg-red-50 p-4 text-sm text-red-800"
+  ></div>
+
+  <slot />
+
+  <!-- Honeypot: hidden from people and assistive tech; bots tend to fill it. -->
+  <div class="absolute -left-[9999px]" aria-hidden="true">
+    <label for={`${name}-${HONEYPOT_FIELD}`}>Leave this field empty</label>
+    <input
+      id={`${name}-${HONEYPOT_FIELD}`}
+      type="text"
+      name={HONEYPOT_FIELD}
+      tabindex="-1"
+      autocomplete="off"
+    />
+  </div>
+
+  {PUBLIC_TURNSTILE_SITE_KEY && <div class="cf-turnstile" data-sitekey={PUBLIC_TURNSTILE_SITE_KEY} />}
+
+  <div class="flex flex-col gap-4 border-t border-line pt-6 sm:flex-row sm:items-center sm:justify-between">
+    <p class="text-sm text-muted">
+      Please don’t include medical details here — we’ll discuss them by phone. In a crisis, call or text{' '}
+      <a href={site.crisis.lifeline.href} class="font-semibold text-brand-700 underline">
+        988
+      </a>
+      .
+    </p>
+    <Button type="submit" size="lg" class="shrink-0" data-submit>
+      {submitLabel}
+    </Button>
+  </div>
+</form>
+
+{PUBLIC_TURNSTILE_SITE_KEY && (
+  <script is:inline src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer />
+)}
+
+<script>
+  import { enhanceForms } from '@/scripts/form-enhance';
+  enhanceForms();
+</script>
