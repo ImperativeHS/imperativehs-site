@@ -133,14 +133,7 @@ sessions, so this is harmless and free.
   preview link before merging.
 - Squash-merge, and keep commit messages in the imperative mood ("Add insurance FAQ").
 
-## Content to confirm before launch
+## Open items
 
-- [ ] Insurance list (`src/config/insurance.ts`), especially what "DC Medicare" on the old site meant
-- [ ] Service areas: are DC and Virginia served, or telehealth only? (`src/config/site.ts`)
-- [ ] Service descriptions: the old copy said "psychiatrists"; the new copy says "psychiatric providers"
-- [ ] Blog posts: migrated as-is (minus one off-topic post and all stock images). Several mention
-      "our psychiatrists" and should be reviewed or pruned
-- [ ] Privacy page and a link to the Notice of Privacy Practices (`src/pages/privacy/index.astro`)
-- [ ] Office and team photos
-- [ ] Social profile links (none were found on the old site)
-- [ ] Zocdoc "Book online" link, if wanted
+Unresolved content, compliance, and launch decisions are tracked in
+[`docs/open-items.md`](docs/open-items.md).
