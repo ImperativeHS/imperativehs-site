@@ -51,9 +51,38 @@ the answer was applied. Search the code for `TODO(content)` to find the spots ea
 - [ ] After go-live: spot-check old URLs redirect (see `public/_redirects`), submit the sitemap in Google
       Search Console, and update the Google Business Profile website link if needed.
 
-## Old site (WordPress), act now
+## Old site (WordPress): unrelated pages, questions first
 
-- [ ] Unpublish the leftover pages that belong to other organizations (list in the 2026-10 site review):
-      `/schedule-an-appointment/`, `/schedule-appointment/`, `/insurance/`, `/our-team/`, `/forms/`,
-      `/resources/`, `/careers/`, `/donation/`, `/d2/`, `/sign-up/`, `/online-training/`,
-      `/knowledge-center/`, `/hmn/`.
+These pages are live on imperativehs.com but show other organizations' names, emails, or addresses. Don't
+remove anything until the questions below are answered.
+
+| Page                                                                             | What it shows                                                                            |
+| -------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------- |
+| https://imperativehs.com/schedule-an-appointment/                                | Appointment page listing `tdkintegratedhealth@gmail.com`, (301) 262-1637, (301) 615-3449 |
+| https://imperativehs.com/resources/                                              | NIH resource links; `tdkintegratedhealth@gmail.com`                                      |
+| https://imperativehs.com/schedule-appointment/                                   | "Become a Champion": We R Champions child placing agency (`werchampions2020@gmail.com`)  |
+| https://imperativehs.com/donation/                                               | Donation page for We R Champions                                                         |
+| https://imperativehs.com/careers/                                                | Careers page; `werchampions2020@gmail.com`                                               |
+| https://imperativehs.com/sign-up/                                                | Sign-up with a Houston, TX address (7417 Navasota St); `werchampions2020@gmail.com`      |
+| https://imperativehs.com/online-training/                                        | Texas DFPS caregiver medication training; `werchampions2020@gmail.com`                   |
+| https://imperativehs.com/d2/                                                     | Online donation for King's Chapel Baltimore (`kingschapelmd@gmail.com`)                  |
+| https://imperativehs.com/insurance/                                              | Insurance page for Manitowoc / Fond du Lac, WI; `shalommedinc@gmail.com`                 |
+| https://imperativehs.com/our-team/                                               | Bio of Dr. Adetunji Adejumo; `shalommedinc@gmail.com`                                    |
+| https://imperativehs.com/forms/                                                  | Downloadable patient forms; `shalommedinc@gmail.com`                                     |
+| https://imperativehs.com/knowledge-center/                                       | Coronavirus / infection video gallery; `shalommedinc@gmail.com`                          |
+| https://imperativehs.com/hmn/                                                    | NCLEX review program                                                                     |
+| https://imperativehs.com/login-register/, https://imperativehs.com/registration/ | Public WordPress account sign-up forms                                                   |
+| https://imperativehs.com/slider/, https://imperativehs.com/forms-2/              | Empty leftover pages                                                                     |
+
+Questions:
+
+- [ ] Are any of these organizations related to IHS (shared owners, partners, a sister practice)? Should any
+      content be kept or moved to its own site?
+- [ ] Who built or manages the WordPress site, and do they reuse it as a template for other clients?
+- [ ] Do the other practices know these pages are public on imperativehs.com, and are any of their forms
+      still receiving submissions (e.g. `/schedule-an-appointment/`)?
+- [ ] Does anyone use the WordPress login/registration pages?
+- [ ] Decide per page: unpublish, keep, or move elsewhere.
+
+The new site currently 301-redirects all of these URLs to the home page (`public/_redirects`, "Retired pages").
+Update those rules if any page should be kept or sent somewhere else.
