@@ -1,0 +1,23 @@
+# build output
+dist/
+.astro/
+.wrangler/
+
+# dependencies
+node_modules/
+
+# environment / secrets
+.env
+.env.*
+!.env.example
+.dev.vars
+.dev.vars.*
+
+# logs
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+.vscode/*
+!.vscode/extensions.json
+.idea/

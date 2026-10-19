@@ -1,0 +1,16 @@
+{
+  "$schema": "node_modules/wrangler/config-schema.json",
+  "name": "imperativehs-site",
+  "main": "@astrojs/cloudflare/entrypoints/server",
+  "compatibility_date": "2026-10-01",
+  "compatibility_flags": ["nodejs_compat"],
+  // The Astro adapter points the assets directory at the build output.
+  "assets": {
+    "binding": "ASSETS",
+  },
+  "observability": {
+    "enabled": true,
+  },
+  // Secrets (RESEND_API_KEY, FORM_TO_EMAIL, FORM_FROM_EMAIL, TURNSTILE_SECRET_KEY)
+  // are set in the Cloudflare dashboard or with `wrangler secret put`, never here.
+}
