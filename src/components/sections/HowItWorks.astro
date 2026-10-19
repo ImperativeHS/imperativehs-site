@@ -1,0 +1,47 @@
+---
+import Section from '@/components/ui/Section.astro';
+import SectionHeading from '@/components/ui/SectionHeading.astro';
+import Icon, { type IconName } from '@/components/ui/Icon.astro';
+
+const steps: { icon: IconName; title: string; body: string }[] = [
+  {
+    icon: 'phone',
+    title: 'Reach out',
+    body: 'Call us or send a short appointment request online. You don’t need a referral to get started.',
+  },
+  {
+    icon: 'message',
+    title: 'We’ll contact you',
+    body: 'Our team gets in touch to learn what you’re looking for, check your insurance, and find a time that works.',
+  },
+  {
+    icon: 'clipboard',
+    title: 'Your first visit',
+    body: 'A licensed provider meets with you to understand your needs and build a care plan together.',
+  },
+];
+---
+
+<Section tone="tint" labelledby="how-it-works">
+  <SectionHeading
+    id="how-it-works"
+    eyebrow="Getting started"
+    title="What to expect"
+    intro="From your first call, you’ll be met with warmth and respect. Here’s how it works."
+    align="center"
+  />
+  <ol class="mt-12 grid gap-6 md:grid-cols-3">
+    {steps.map((step, i) => (
+      <li class="relative rounded-3xl bg-white p-7 shadow-sm ring-1 ring-line">
+        <div class="flex items-center gap-3">
+          <span class="flex size-11 items-center justify-center rounded-2xl bg-brand-100 text-brand-700">
+            <Icon name={step.icon} class="size-5" />
+          </span>
+          <span class="text-sm font-semibold text-muted">Step {i + 1}</span>
+        </div>
+        <h3 class="mt-5 text-xl font-semibold">{step.title}</h3>
+        <p class="mt-2 text-muted">{step.body}</p>
+      </li>
+    ))}
+  </ol>
+</Section>

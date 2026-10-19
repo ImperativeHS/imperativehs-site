@@ -1,0 +1,50 @@
+---
+import Icon, { type IconName } from '@/components/ui/Icon.astro';
+import { getServices, servicePath } from '@/lib/content';
+
+interface Props {
+  /** Service id to leave out (e.g. the current page). */
+  exclude?: string;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { exclude, headingLevel: Heading = 'h3' } = Astro.props;
+
+const icons: Record<string, IconName> = {
+  'mental-health': 'heart',
+  'psychiatric-rehabilitation': 'users',
+  'substance-use': 'shield-check',
+  'residential-services': 'home',
+};
+
+const services = (await getServices()).filter((s) => s.id !== exclude);
+---
+
+<ul
+  class:list={[
+    'grid gap-6 sm:grid-cols-2',
+    services.length > 3 && 'lg:grid-cols-4',
+    services.length === 3 && 'lg:grid-cols-3',
+  ]}
+>
+  {services.map((s) => (
+    <li class="group relative flex flex-col rounded-3xl bg-white p-7 shadow-sm ring-1 ring-line transition hover:shadow-md hover:ring-brand-200">
+      <span class="flex size-12 items-center justify-center rounded-2xl bg-brand-100 text-brand-700">
+        <Icon name={icons[s.id] ?? 'heart'} class="size-6" />
+      </span>
+      <Heading class="mt-5 text-xl font-semibold">
+        <a href={servicePath(s)} class="after:absolute after:inset-0 after:rounded-3xl">
+          {s.data.shortTitle}
+        </a>
+      </Heading>
+      <p class="mt-2 flex-1 text-muted">{s.data.summary}</p>
+      <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700">
+        Learn more
+        <Icon
+          name="arrow-right"
+          class="size-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none"
+        />
+      </span>
+    </li>
+  ))}
+</ul>

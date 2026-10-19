@@ -1,0 +1,24 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import { insurancePlans } from '@/config/insurance';
+
+interface Props {
+  columns?: 2 | 3;
+}
+
+const { columns = 2 } = Astro.props;
+---
+
+<ul class:list={['grid gap-3 sm:grid-cols-2', columns === 3 && 'lg:grid-cols-3']}>
+  {insurancePlans.map((plan) => (
+    <li class="flex items-start gap-3 rounded-2xl bg-white p-4 ring-1 ring-line">
+      <span class="mt-0.5 flex size-6 items-center justify-center rounded-full bg-brand-100 text-brand-700">
+        <Icon name="check" class="size-4" strokeWidth={2.5} />
+      </span>
+      <span>
+        <span class="font-semibold text-ink">{plan.name}</span>
+        {plan.note && <span class="block text-sm text-muted">{plan.note}</span>}
+      </span>
+    </li>
+  ))}
+</ul>
