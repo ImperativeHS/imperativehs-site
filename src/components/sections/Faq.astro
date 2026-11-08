@@ -1,6 +1,4 @@
 ---
-import Icon from '@/components/ui/Icon.astro';
-
 interface Props {
   items: { question: string; answer: string }[];
 }
@@ -8,14 +6,19 @@ interface Props {
 const { items } = Astro.props;
 ---
 
-<div class="divide-y divide-line rounded-3xl bg-white ring-1 ring-line">
+<div class="border-t border-brand-900/20">
   {items.map((item) => (
-    <details class="group px-6 py-1">
-      <summary class="flex cursor-pointer list-none items-center justify-between gap-4 py-4 font-semibold text-ink [&::-webkit-details-marker]:hidden">
+    <details class="group border-b border-brand-900/20">
+      <summary class="flex cursor-pointer list-none items-baseline justify-between gap-6 py-5 font-display text-xl text-brand-950 [&::-webkit-details-marker]:hidden">
         {item.question}
-        <Icon name="chevron-down" class="size-5 text-brand-600 transition-transform group-open:rotate-180" />
+        <span
+          aria-hidden="true"
+          class="font-sans text-2xl leading-none text-brand-700 transition-transform duration-200 group-open:rotate-45"
+        >
+          +
+        </span>
       </summary>
-      <p class="pb-5 text-muted">{item.answer}</p>
+      <p class="max-w-2xl pb-6 text-muted">{item.answer}</p>
     </details>
   ))}
 </div>

@@ -5,9 +5,8 @@ import ContactCard from '@/components/sections/ContactCard.astro';
 import CtaBand from '@/components/sections/CtaBand.astro';
 import Faq from '@/components/sections/Faq.astro';
 import PageHero from '@/components/sections/PageHero.astro';
-import ServiceCards from '@/components/sections/ServiceCards.astro';
+import ServiceList from '@/components/sections/ServiceList.astro';
 import Button from '@/components/ui/Button.astro';
-import Icon from '@/components/ui/Icon.astro';
 import Section from '@/components/ui/Section.astro';
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 import { site } from '@/config/site';
@@ -43,45 +42,44 @@ const jsonLd = [
 
 <BaseLayout title={data.seoTitle} description={data.description} jsonLd={jsonLd}>
   <PageHero title={data.title} lead={data.summary} breadcrumbs={crumbs}>
-    <Button href="/request-appointment/" size="lg" icon="calendar">
+    <Button href="/request-appointment/" size="lg" icon="arrow-right" iconPosition="end">
       Request an appointment
     </Button>
-    <Button href={site.phone.href} size="lg" variant="secondary" icon="phone">
-      Call {site.phone.display}
-    </Button>
+    <a href={site.phone.href} class="link text-lg">
+      or call {site.phone.display}
+    </a>
   </PageHero>
 
   {data.highlights.length > 0 && (
     <Section spacing="sm">
-      <ul class:list={['grid gap-5 sm:grid-cols-2', data.highlights.length % 3 === 0 && 'lg:grid-cols-3']}>
+      <ul
+        class:list={[
+          'grid gap-x-10 sm:grid-cols-2',
+          data.highlights.length % 3 === 0 ? 'lg:grid-cols-3' : 'lg:grid-cols-4',
+        ]}
+      >
         {data.highlights.map((h) => (
-          <li class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-line">
-            <span class="flex size-9 items-center justify-center rounded-xl bg-brand-100 text-brand-700">
-              <Icon name="check" class="size-5" strokeWidth={2.5} />
-            </span>
-            <h2 class="mt-4 font-sans text-lg font-semibold text-ink">{h.title}</h2>
-            <p class="mt-1.5 text-muted">{h.body}</p>
+          <li class="border-t border-brand-900/20 py-6">
+            <h2 class="text-xl">{h.title}</h2>
+            <p class="mt-2 text-[15px] text-muted">{h.body}</p>
           </li>
         ))}
       </ul>
     </Section>
   )}
 
-  <Section spacing="sm">
-    <div class="grid gap-12 lg:grid-cols-[1fr_22rem]">
-      <article class="prose-ihs prose-lg">
+  <Section spacing="sm" class="pb-20 sm:pb-28">
+    <div class="grid gap-14 lg:grid-cols-[1fr_20rem] lg:gap-20">
+      <article class="prose-ihs prose-lg max-w-2xl">
         <Content />
       </article>
-      <div class="space-y-6 lg:sticky lg:top-28 lg:self-start">
+      <div class="space-y-8 lg:sticky lg:top-28 lg:self-start">
         {data.whoWeServe.length > 0 && (
-          <aside class="rounded-3xl bg-brand-50 p-7 ring-1 ring-brand-100">
-            <h2 class="text-xl font-semibold">Who we serve</h2>
-            <ul class="mt-4 space-y-3">
+          <aside>
+            <h2 class="text-2xl">Who we serve</h2>
+            <ul class="mt-4 border-t border-line">
               {data.whoWeServe.map((item) => (
-                <li class="flex gap-3 text-ink">
-                  <Icon name="check" class="mt-1 size-4 text-brand-600" strokeWidth={2.5} />
-                  {item}
-                </li>
+                <li class="border-b border-line py-3 text-ink">{item}</li>
               ))}
             </ul>
           </aside>
@@ -93,19 +91,17 @@ const jsonLd = [
 
   {data.faqs.length > 0 && (
     <Section tone="tint" labelledby="faq-heading">
-      <div class="mx-auto max-w-3xl">
-        <SectionHeading id="faq-heading" title="Frequently asked questions" align="center" />
-        <div class="mt-10">
-          <Faq items={data.faqs} />
-        </div>
+      <div class="grid gap-10 lg:grid-cols-[1fr_2fr] lg:gap-20">
+        <SectionHeading id="faq-heading" title="Common questions" />
+        <Faq items={data.faqs} />
       </div>
     </Section>
   )}
 
   <Section labelledby="other-services-heading">
-    <SectionHeading id="other-services-heading" title="Other services" />
-    <div class="mt-8">
-      <ServiceCards exclude={service.id} />
+    <SectionHeading id="other-services-heading" title="Other ways we can help" />
+    <div class="mt-10">
+      <ServiceList exclude={service.id} />
     </div>
   </Section>
 

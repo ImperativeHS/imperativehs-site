@@ -31,7 +31,7 @@ const crumbs = [
     <div class="grid gap-10 lg:grid-cols-[1fr_22rem]">
       <FormShell name="referral" submitLabel="Send referral">
         <fieldset class="space-y-6">
-          <legend class="font-display text-xl font-semibold text-brand-900">About you</legend>
+          <legend class="font-display text-2xl text-brand-950">About you</legend>
           <div class="grid gap-6 sm:grid-cols-2">
             <TextField name="referrerName" label="Your name" autocomplete="name" required maxlength={120} />
             <TextField
@@ -61,9 +61,7 @@ const crumbs = [
         </fieldset>
 
         <fieldset class="space-y-6 border-t border-line pt-6">
-          <legend class="font-display text-xl font-semibold text-brand-900">
-            About the person you’re referring
-          </legend>
+          <legend class="font-display text-2xl text-brand-950">About the person you’re referring</legend>
           <div class="grid gap-6 sm:grid-cols-2">
             <TextField name="clientName" label="Their name" autocomplete="off" required maxlength={120} />
             <TextField

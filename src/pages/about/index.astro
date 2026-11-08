@@ -1,7 +1,6 @@
 ---
 import CtaBand from '@/components/sections/CtaBand.astro';
 import PageHero from '@/components/sections/PageHero.astro';
-import Icon from '@/components/ui/Icon.astro';
 import Section from '@/components/ui/Section.astro';
 import SectionHeading from '@/components/ui/SectionHeading.astro';
 import { site } from '@/config/site';
@@ -42,69 +41,65 @@ const values = [
   <PageHero
     title="Empowering families, youth, and individuals with hope, healing, and happiness"
     breadcrumbs={crumbs}
-    eyebrow="About us"
+    kicker="About us"
   />
 
-  <Section spacing="sm">
-    <div class="grid gap-12 lg:grid-cols-2">
-      <div class="prose-ihs prose-lg">
-        <h2>Who we are</h2>
-        <p>
-          Imperative Healthcare Services provides compassionate, comprehensive care through two connected
-          areas of focus: outpatient mental health services and in-home residential support.
-        </p>
-        <p>
-          Our team includes licensed clinicians — psychiatric providers, therapists, and counselors —
-          alongside trained, background-checked caregivers. Together, we support you through every step of
-          your health journey, whether at our office, in the community, or at home.
-        </p>
+  <Section>
+    <div class="grid gap-14 lg:grid-cols-[1fr_1.1fr] lg:gap-20">
+      <div>
+        <h2 class="text-3xl sm:text-4xl">Who we are</h2>
+        <div class="mt-6 space-y-5 text-lg text-ink/90">
+          <p>
+            Imperative Healthcare Services provides compassionate, comprehensive care through two connected
+            areas of focus: outpatient mental health services and in-home residential support.
+          </p>
+          <p>
+            Our team includes licensed clinicians — psychiatric providers, therapists, and counselors —
+            alongside trained, background-checked caregivers. Together, we support you through every step of
+            your health journey, whether at our office, in the community, or at home.
+          </p>
+        </div>
       </div>
-      <div class="grid gap-6">
-        <div class="rounded-3xl bg-brand-50 p-7 ring-1 ring-brand-100">
-          <h2 class="text-2xl font-semibold">Our mission</h2>
-          <p class="mt-3 text-muted">
+      <dl class="border-t border-line">
+        <div class="border-b border-line py-7">
+          <dt class="font-display text-2xl">Our mission</dt>
+          <dd class="mt-3 text-muted">
             To facilitate hope, wellness, and personal growth for all individuals through integrated
             behavioral health support and compassionate residential care — in a safe, judgment-free
             environment that improves mental health and quality of life while maximizing independence.
-          </p>
+          </dd>
         </div>
-        <div class="rounded-3xl bg-white p-7 ring-1 ring-line">
-          <h2 class="text-2xl font-semibold">Our vision</h2>
-          <p class="mt-3 text-muted">
+        <div class="border-b border-line py-7">
+          <dt class="font-display text-2xl">Our vision</dt>
+          <dd class="mt-3 text-muted">
             A community where mental health and residential support needs are prioritized, stigma is
             eliminated, and everyone can seek the right combination of services without fear of judgment or
             discrimination.
-          </p>
+          </dd>
         </div>
-      </div>
+      </dl>
     </div>
   </Section>
 
   <Section tone="tint" labelledby="values-heading">
-    <SectionHeading id="values-heading" title="Our core values" align="center" />
-    <ul class="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-5">
-      {values.map((v) => (
-        <li class="rounded-3xl bg-white p-6 ring-1 ring-line">
-          <h3 class="text-lg font-semibold">{v.title}</h3>
-          <p class="mt-2 text-sm text-muted">{v.body}</p>
+    <SectionHeading id="values-heading" title="What we value" />
+    <ol class="mt-12 grid gap-x-8 sm:grid-cols-2 lg:grid-cols-5">
+      {values.map((v, i) => (
+        <li class="border-t border-brand-900/20 py-6">
+          <span class="text-sm text-muted tabular-nums">{String(i + 1).padStart(2, '0')}</span>
+          <h3 class="mt-3 text-2xl">{v.title}</h3>
+          <p class="mt-2 text-[15px] text-muted">{v.body}</p>
         </li>
       ))}
-    </ul>
+    </ol>
   </Section>
 
   <Section labelledby="areas-heading" spacing="sm">
-    <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
-      <h2 id="areas-heading" class="text-2xl font-semibold">
+    <div class="flex flex-col gap-4 sm:flex-row sm:items-baseline sm:justify-between">
+      <h2 id="areas-heading" class="text-2xl sm:text-3xl">
         Areas we serve
       </h2>
-      <ul class="flex flex-wrap gap-3">
-        {site.serviceAreas.map((area) => (
-          <li class="inline-flex items-center gap-2 rounded-full bg-brand-50 px-4 py-2 font-medium text-brand-800 ring-1 ring-brand-100">
-            <Icon name="map-pin" class="size-4" />
-            {area}
-          </li>
-        ))}
-      </ul>
+      <p class="text-lg text-ink">{site.serviceAreas.join(' · ')}</p>
     </div>
   </Section>
 

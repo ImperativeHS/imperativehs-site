@@ -18,7 +18,7 @@ const id = `field-${name}`;
 ---
 
 <div data-field={name} class={className}>
-  <label for={id} class="block text-sm font-semibold text-ink">
+  <label for={id} class="block text-[15px] font-medium text-ink">
     {label}
   </label>
   <div class="relative mt-2">
@@ -27,7 +27,7 @@ const id = `field-${name}`;
       name={name}
       required={required}
       aria-describedby={`${id}-error`}
-      class="block w-full appearance-none rounded-xl border-0 bg-white py-3 pr-10 pl-4 text-ink shadow-xs ring-1 ring-line ring-inset focus:ring-2 focus:ring-brand-600 aria-invalid:ring-2 aria-invalid:ring-red-600"
+      class="block w-full appearance-none rounded-md border-0 bg-white py-3 pr-10 pl-4 text-ink ring-1 ring-brand-900/20 ring-inset focus:ring-2 focus:ring-brand-700 aria-invalid:ring-2 aria-invalid:ring-red-600"
     >
       {!value && (
         <option value="" disabled selected>

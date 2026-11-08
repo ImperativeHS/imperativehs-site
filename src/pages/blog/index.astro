@@ -24,19 +24,23 @@ const crumbs = [
   />
 
   <Section spacing="sm">
-    <ul class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+    <ul class="border-t border-line">
       {posts.map((post) => (
-        <li class="group relative flex flex-col rounded-3xl bg-white p-6 shadow-sm ring-1 ring-line transition hover:shadow-md hover:ring-brand-200">
-          <p class="text-xs font-semibold tracking-wide text-sky-brand-700 uppercase">{post.data.category}</p>
-          <h2 class="mt-3 text-xl font-semibold group-hover:text-brand-700">
-            <a href={postPath(post)} class="after:absolute after:inset-0 after:rounded-3xl">
-              {post.data.title}
-            </a>
-          </h2>
-          <p class="mt-3 line-clamp-3 flex-1 text-sm text-muted">{post.data.description}</p>
-          <p class="mt-5 text-xs text-muted">
-            <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
-          </p>
+        <li class="group relative border-b border-line">
+          <div class="grid gap-x-10 gap-y-2 py-7 sm:grid-cols-[10rem_1fr]">
+            <p class="text-sm text-muted">
+              <time datetime={post.data.pubDate.toISOString()}>{formatDate(post.data.pubDate)}</time>
+              <span class="block">{post.data.category}</span>
+            </p>
+            <div>
+              <h2 class="text-2xl leading-snug transition-colors group-hover:text-brand-700">
+                <a href={postPath(post)} class="after:absolute after:inset-0">
+                  {post.data.title}
+                </a>
+              </h2>
+              <p class="mt-2 line-clamp-2 max-w-3xl text-muted">{post.data.description}</p>
+            </div>
+          </div>
         </li>
       ))}
     </ul>

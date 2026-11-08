@@ -1,54 +1,42 @@
 ---
-import Icon from '@/components/ui/Icon.astro';
 import { fullAddress, site } from '@/config/site';
 ---
 
-<aside class="rounded-3xl bg-white p-7 shadow-sm ring-1 ring-line">
-  <h2 class="text-xl font-semibold">Prefer to talk?</h2>
-  <p class="mt-2 text-muted">Call us during office hours and we’ll help you get started.</p>
-  <ul class="mt-6 space-y-4">
-    <li>
-      <a href={site.phone.href} class="group flex items-center gap-3">
-        <span class="flex size-10 items-center justify-center rounded-xl bg-brand-100 text-brand-700">
-          <Icon name="phone" class="size-5" />
-        </span>
-        <span>
-          <span class="block text-sm text-muted">Phone</span>
-          <span class="font-semibold text-ink group-hover:text-brand-700">{site.phone.display}</span>
-        </span>
-      </a>
-    </li>
-    <li>
-      <a href={`mailto:${site.email}`} class="group flex items-center gap-3">
-        <span class="flex size-10 items-center justify-center rounded-xl bg-brand-100 text-brand-700">
-          <Icon name="mail" class="size-5" />
-        </span>
-        <span>
-          <span class="block text-sm text-muted">Email</span>
-          <span class="font-semibold text-ink group-hover:text-brand-700">{site.email}</span>
-        </span>
-      </a>
-    </li>
-    <li>
-      <a href={site.mapsUrl} class="group flex items-center gap-3" rel="noopener" target="_blank">
-        <span class="flex size-10 items-center justify-center rounded-xl bg-brand-100 text-brand-700">
-          <Icon name="map-pin" class="size-5" />
-        </span>
-        <span>
-          <span class="block text-sm text-muted">Office</span>
-          <address class="font-semibold text-ink not-italic group-hover:text-brand-700">
-            {fullAddress}
-          </address>
-        </span>
-      </a>
-    </li>
-  </ul>
-  <dl class="mt-6 space-y-1 border-t border-line pt-5 text-sm">
-    {site.hours.map((h) => (
-      <div class="flex justify-between gap-4">
-        <dt class="text-muted">{h.label}</dt>
-        <dd class="font-medium text-ink">{h.value}</dd>
-      </div>
-    ))}
+<aside class="rounded-lg bg-sand p-7">
+  <h2 class="text-2xl">Prefer to talk?</h2>
+  <p class="mt-2 text-muted">Call during office hours and we’ll help you get started.</p>
+  <a
+    href={site.phone.href}
+    class="mt-5 block font-display text-3xl text-brand-800 tabular-nums hover:text-brand-600"
+  >
+    {site.phone.display}
+  </a>
+  <dl class="mt-6 space-y-4 border-t border-line pt-5 text-[15px]">
+    <div>
+      <dt class="text-sm text-muted">Email</dt>
+      <dd>
+        <a href={`mailto:${site.email}`} class="link">
+          {site.email}
+        </a>
+      </dd>
+    </div>
+    <div>
+      <dt class="text-sm text-muted">Office</dt>
+      <dd>
+        <a href={site.mapsUrl} class="link" rel="noopener" target="_blank">
+          <address class="inline not-italic">{fullAddress}</address>
+        </a>
+      </dd>
+    </div>
+    <div>
+      <dt class="text-sm text-muted">Hours</dt>
+      <dd>
+        {site.hours.map((h) => (
+          <span class="block">
+            {h.label}: {h.value}
+          </span>
+        ))}
+      </dd>
+    </div>
   </dl>
 </aside>

@@ -25,19 +25,19 @@ const {
 } = Astro.props;
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-brand-600 text-white shadow-sm hover:bg-brand-700 active:bg-brand-800',
+  primary: 'bg-brand-700 text-white hover:bg-brand-800 active:bg-brand-900',
   secondary:
-    'bg-white text-brand-700 ring-1 ring-brand-200 ring-inset hover:bg-brand-50 hover:ring-brand-300',
-  light: 'bg-white text-brand-800 shadow-sm hover:bg-brand-50',
+    'bg-transparent text-brand-800 ring-1 ring-brand-800/25 ring-inset hover:bg-brand-50 hover:ring-brand-800/50',
+  light: 'bg-surface text-brand-900 hover:bg-white',
   ghost: 'text-brand-700 hover:bg-brand-50',
 };
 const sizes: Record<Size, string> = {
-  md: 'px-4 py-2.5 text-sm gap-2',
+  md: 'px-4 py-2.5 text-[15px] gap-2',
   lg: 'px-6 py-3.5 text-base gap-2.5',
 };
 
 const classes = [
-  'inline-flex items-center justify-center rounded-full font-semibold transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60',
+  'group/button inline-flex items-center justify-center rounded-md font-medium whitespace-nowrap transition-colors duration-200 disabled:cursor-not-allowed disabled:opacity-60',
   variants[variant],
   sizes[size],
   className,
@@ -49,12 +49,16 @@ const iconClass = size === 'lg' ? 'size-5' : 'size-4';
   <a href={href} class:list={classes} {...rest}>
     {icon && iconPosition === 'start' && <Icon name={icon} class={iconClass} />}
     <slot />
-    {icon && iconPosition === 'end' && <Icon name={icon} class={iconClass} />}
+    {icon && iconPosition === 'end' && (
+      <Icon name={icon} class:list={[iconClass, 'transition-transform group-hover/button:translate-x-0.5']} />
+    )}
   </a>
 ) : (
   <button type={type} class:list={classes} {...rest}>
     {icon && iconPosition === 'start' && <Icon name={icon} class={iconClass} />}
     <slot />
-    {icon && iconPosition === 'end' && <Icon name={icon} class={iconClass} />}
+    {icon && iconPosition === 'end' && (
+      <Icon name={icon} class:list={[iconClass, 'transition-transform group-hover/button:translate-x-0.5']} />
+    )}
   </button>
 )}
