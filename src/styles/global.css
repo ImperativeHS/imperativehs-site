@@ -2,33 +2,46 @@
 @plugin '@tailwindcss/typography';
 
 /*
- * Design tokens. Brand purple and blue come from the IHS logo.
- * Text colors on light backgrounds meet WCAG AA contrast.
+ * Design tokens. Plum comes from the IHS logo; the warm neutrals keep it calm
+ * rather than clinical. Text colors on `surface` and `sand` meet WCAG AA.
  */
 @theme {
-  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
+  --font-sans: 'Instrument Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-display: 'Newsreader Variable', ui-serif, Georgia, serif;
 
-  --color-brand-50: #f8f3f9;
-  --color-brand-100: #f0e4f2;
-  --color-brand-200: #e0c8e5;
-  --color-brand-300: #c99fd1;
-  --color-brand-400: #ac6fb8;
-  --color-brand-500: #924d9f;
+  --color-brand-50: #f8f2f8;
+  --color-brand-100: #efe2ef;
+  --color-brand-200: #dec5df;
+  --color-brand-300: #c49cc7;
+  --color-brand-400: #a46ea9;
+  --color-brand-500: #8a4c90;
   --color-brand-600: #7e3489; /* logo purple */
-  --color-brand-700: #682b72;
-  --color-brand-800: #55245d;
-  --color-brand-900: #3f1b45;
-  --color-brand-950: #28102c;
+  --color-brand-700: #652a6e;
+  --color-brand-800: #4f2257;
+  --color-brand-900: #3a1940;
+  --color-brand-950: #24102a;
 
-  --color-sky-brand-400: #3bb0e6;
-  --color-sky-brand-500: #1e9bd7; /* logo blue — decorative use only on white */
+  --color-sky-brand-500: #1e9bd7; /* logo blue — decorative use only */
   --color-sky-brand-700: #0b6a99; /* text-safe blue */
 
-  --color-ink: #24182a;
-  --color-muted: #5c5163;
-  --color-surface: #fdfbfd;
-  --color-line: #e8e0eb;
+  --color-ink: #26172b;
+  --color-muted: #5d5160;
+  --color-surface: #fbf8f4;
+  --color-sand: #f3ece3;
+  --color-line: #e5dcd1;
+
+  --animate-rise: rise 0.7s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+
+  @keyframes rise {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: none;
+    }
+  }
 }
 
 @layer base {
@@ -38,20 +51,23 @@
   }
 
   body {
-    @apply bg-surface font-sans text-ink antialiased;
-    text-rendering: optimizeLegibility;
+    @apply bg-surface font-sans text-[17px] leading-relaxed text-ink antialiased;
   }
 
   h1,
   h2,
   h3 {
-    @apply font-display text-brand-900;
+    @apply font-display font-normal tracking-[-0.015em] text-brand-950;
     font-optical-sizing: auto;
     text-wrap: balance;
   }
 
   p {
     text-wrap: pretty;
+  }
+
+  ::selection {
+    @apply bg-brand-200 text-brand-950;
   }
 
   :focus-visible {
@@ -63,12 +79,32 @@
       scroll-behavior: smooth;
     }
   }
+
+  @media (prefers-reduced-motion: reduce) {
+    *,
+    *::before,
+    *::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
 }
 
 @utility container-page {
-  @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+}
+
+/* Small label set in the body font, used sparingly above headings. */
+@utility kicker {
+  @apply text-sm font-medium tracking-wide text-brand-700;
+}
+
+/* Text link with an underline that strengthens on hover. */
+@utility link {
+  @apply font-medium text-brand-700 underline decoration-brand-300 decoration-1 underline-offset-4 transition-colors hover:text-brand-900 hover:decoration-brand-700;
 }
 
 @utility prose-ihs {
-  @apply prose max-w-none prose-slate prose-headings:font-display prose-headings:text-brand-900 prose-a:text-brand-700 prose-a:underline-offset-2 hover:prose-a:text-brand-900 prose-strong:text-ink prose-li:marker:text-brand-500;
+  @apply prose max-w-none prose-neutral prose-headings:font-display prose-headings:font-normal prose-headings:tracking-tight prose-headings:text-brand-950 prose-h2:text-3xl prose-h3:text-2xl prose-p:text-ink/90 prose-a:font-medium prose-a:text-brand-700 prose-a:decoration-brand-300 prose-a:underline-offset-4 hover:prose-a:decoration-brand-700 prose-blockquote:border-brand-300 prose-blockquote:font-display prose-blockquote:text-xl prose-blockquote:font-normal prose-blockquote:not-italic prose-strong:font-semibold prose-strong:text-ink prose-li:marker:text-brand-400;
 }

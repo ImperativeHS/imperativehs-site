@@ -3,7 +3,6 @@ import { Image } from 'astro:assets';
 import headshot from '@/assets/images/faramade-eruanga.jpg';
 import CtaBand from '@/components/sections/CtaBand.astro';
 import PageHero from '@/components/sections/PageHero.astro';
-import Icon from '@/components/ui/Icon.astro';
 import Section from '@/components/ui/Section.astro';
 import { site } from '@/config/site';
 import BaseLayout from '@/layouts/BaseLayout.astro';
@@ -46,23 +45,23 @@ const personSchema = {
 >
   <PageHero title="Meet our team" breadcrumbs={crumbs} />
 
-  <Section spacing="sm">
-    <article class="grid gap-12 lg:grid-cols-[22rem_1fr]">
+  <Section>
+    <article class="grid gap-14 lg:grid-cols-[22rem_1fr] lg:gap-20">
       <div class="lg:sticky lg:top-28 lg:self-start">
         <Image
           src={headshot}
           alt="Dr. Faramade Eruanga in a white coat"
           widths={[352, 704]}
           sizes="(min-width: 1024px) 352px, 100vw"
-          class="aspect-[4/5] w-full rounded-3xl object-cover object-top shadow-sm"
+          class="aspect-[4/5] w-full rounded-lg object-cover object-top"
         />
         <div class="mt-5">
-          <h2 class="text-2xl font-semibold">Dr. Faramade (Fara) Eruanga</h2>
-          <p class="text-muted">DNP, PMHNP-BC, FNP-C · Medical Director</p>
+          <h2 class="text-3xl">Dr. Faramade (Fara) Eruanga</h2>
+          <p class="mt-1 text-muted">DNP, PMHNP-BC, FNP-C · Medical Director</p>
         </div>
       </div>
 
-      <div class="prose-ihs prose-lg">
+      <div class="prose-ihs prose-lg max-w-2xl">
         <p class="lead">
           Dr. Faramade (Fara) Eruanga is the medical director of Imperative Healthcare Services, bringing more
           than 15 years of mental health expertise to her compassionate practice.
@@ -110,11 +109,8 @@ const personSchema = {
   </Section>
 
   <Section tone="tint" spacing="sm">
-    <div class="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-      <span class="flex size-12 items-center justify-center rounded-2xl bg-white text-brand-700 ring-1 ring-brand-100">
-        <Icon name="users" class="size-6" />
-      </span>
-      <p class="max-w-3xl text-lg text-ink">
+    <div>
+      <p class="max-w-3xl font-display text-2xl leading-snug text-brand-950">
         Dr. Eruanga leads a team of licensed therapists, counselors, and trained caregivers across our mental
         health, rehabilitation, substance use, and in-home care programs.
       </p>

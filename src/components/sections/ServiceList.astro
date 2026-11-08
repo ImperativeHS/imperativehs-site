@@ -1,0 +1,36 @@
+---
+import Icon from '@/components/ui/Icon.astro';
+import { getServices, servicePath } from '@/lib/content';
+
+interface Props {
+  /** Service id to leave out (e.g. the current page). */
+  exclude?: string;
+  headingLevel?: 'h2' | 'h3';
+}
+
+const { exclude, headingLevel: Heading = 'h3' } = Astro.props;
+
+const services = (await getServices()).filter((s) => s.id !== exclude);
+---
+
+<ul class="border-t border-line">
+  {services.map((s, i) => (
+    <li class="group relative border-b border-line">
+      <div class="grid gap-x-8 gap-y-2 py-7 transition-colors duration-300 sm:grid-cols-[3rem_1fr_1.2fr_auto] sm:items-baseline sm:py-9">
+        <span class="hidden text-sm text-muted tabular-nums sm:block" aria-hidden="true">
+          {String(i + 1).padStart(2, '0')}
+        </span>
+        <Heading class="text-2xl leading-snug transition-colors group-hover:text-brand-700 sm:text-3xl">
+          <a href={servicePath(s)} class="after:absolute after:inset-0">
+            {s.data.shortTitle}
+          </a>
+        </Heading>
+        <p class="text-muted">{s.data.summary}</p>
+        <Icon
+          name="arrow-right"
+          class="hidden size-5 self-center text-brand-700 transition-transform duration-300 group-hover:translate-x-1 sm:block"
+        />
+      </div>
+    </li>
+  ))}
+</ul>

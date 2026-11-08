@@ -15,11 +15,11 @@ const { name, label, hint, rows, required, class: className, id: idProp, ...rest
 const id = idProp ?? `field-${name}`;
 const describedBy = [hint && `${id}-hint`, `${id}-error`].filter(Boolean).join(' ');
 const inputClass =
-  'mt-2 block w-full rounded-xl border-0 bg-white px-4 py-3 text-ink shadow-xs ring-1 ring-line ring-inset placeholder:text-muted/70 focus:ring-2 focus:ring-brand-600 aria-invalid:ring-2 aria-invalid:ring-red-600';
+  'mt-2 block w-full rounded-md border-0 bg-white px-4 py-3 text-ink ring-1 ring-brand-900/20 ring-inset placeholder:text-muted/70 focus:ring-2 focus:ring-brand-700 aria-invalid:ring-2 aria-invalid:ring-red-600';
 ---
 
 <div data-field={name} class={className}>
-  <label for={id} class="block text-sm font-semibold text-ink">
+  <label for={id} class="block text-[15px] font-medium text-ink">
     {label}
     {!required && <span class="font-normal text-muted"> (optional)</span>}
   </label>

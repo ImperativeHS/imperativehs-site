@@ -7,74 +7,51 @@ import { primaryNav } from '@/config/navigation';
 import { site } from '@/config/site';
 import { getServices, servicePath } from '@/lib/content';
 
-const services = (await getServices()).map((s) => ({ label: s.data.shortTitle, href: servicePath(s) }));
+const services = (await getServices()).map((s) => ({
+  label: s.data.shortTitle,
+  summary: s.data.summary,
+  href: servicePath(s),
+}));
 const path = Astro.url.pathname;
 const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+const navLink =
+  'relative py-2 text-[15px] text-ink transition-colors hover:text-brand-700 aria-[current=page]:text-brand-700 aria-[current=page]:after:absolute aria-[current=page]:after:inset-x-0 aria-[current=page]:after:-bottom-px aria-[current=page]:after:h-px aria-[current=page]:after:bg-brand-700';
 ---
 
-<header class="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85">
-  <div class="hidden bg-brand-800 text-sm text-brand-50 sm:block">
-    <div class="container-page flex items-center justify-between gap-4 py-1.5">
-      <p class="flex items-center gap-2">
-        <Icon name="clock" class="size-4 text-brand-200" />
-        Mon–Fri 9am–7pm · Saturdays by appointment
-      </p>
-      <p class="flex items-center gap-5">
-        <a href={`mailto:${site.email}`} class="hover:text-white hover:underline">
-          {site.email}
-        </a>
-        <a href={site.phone.href} class="font-semibold hover:text-white hover:underline">
-          {site.phone.display}
-        </a>
-      </p>
-    </div>
-  </div>
-
-  <div class="container-page flex h-16 items-center justify-between gap-4 lg:h-20">
+<header class="sticky top-0 z-40 border-b border-line bg-surface/90 backdrop-blur-md">
+  <div class="container-page flex h-16 items-center justify-between gap-6 lg:h-[4.5rem]">
     <a href="/" class="flex shrink-0 items-center" aria-label={`${site.name} — home`}>
-      <Image
-        src={logo}
-        alt=""
-        class="h-10 w-auto lg:h-12"
-        loading="eager"
-        widths={[160, 320]}
-        sizes="160px"
-      />
+      <Image src={logo} alt="" class="h-9 w-auto lg:h-10" loading="eager" widths={[160, 320]} sizes="160px" />
     </a>
 
     <nav aria-label="Main" class="hidden lg:block">
-      <ul class="flex items-center gap-1">
+      <ul class="flex items-center gap-7">
         {primaryNav.map((item) =>
           item.href === '/services/' ? (
             <li class="group relative">
               <a
                 href={item.href}
-                class="flex items-center gap-1 rounded-full px-3 py-2 text-[15px] font-medium text-ink hover:bg-brand-50 hover:text-brand-700 aria-[current=page]:text-brand-700"
+                class:list={[navLink, 'flex items-center gap-1']}
                 aria-current={isCurrent(item.href) ? 'page' : undefined}
               >
                 {item.label}
                 <Icon
                   name="chevron-down"
-                  class="size-4 transition-transform group-focus-within:rotate-180 group-hover:rotate-180"
+                  class="size-3.5 text-muted transition-transform group-focus-within:rotate-180 group-hover:rotate-180"
                 />
               </a>
-              <div class="invisible absolute top-full left-0 pt-2 opacity-0 transition group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
-                <ul class="w-72 rounded-2xl border border-line bg-white p-2 shadow-lg">
+              <div class="invisible absolute top-full -left-5 pt-3 opacity-0 transition duration-200 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+                <ul class="w-[22rem] rounded-lg border border-line bg-surface p-2 shadow-[0_12px_32px_-12px_rgb(36_16_42/0.25)]">
                   {services.map((s) => (
                     <li>
-                      <a
-                        href={s.href}
-                        class="block rounded-xl px-3 py-2.5 text-sm font-medium text-ink hover:bg-brand-50 hover:text-brand-700"
-                      >
-                        {s.label}
+                      <a href={s.href} class="block rounded-md px-3 py-2.5 hover:bg-sand">
+                        <span class="block font-medium text-ink">{s.label}</span>
+                        <span class="mt-0.5 line-clamp-1 block text-sm text-muted">{s.summary}</span>
                       </a>
                     </li>
                   ))}
-                  <li class="mt-1 border-t border-line pt-1">
-                    <a
-                      href="/services/"
-                      class="block rounded-xl px-3 py-2.5 text-sm font-semibold text-brand-700 hover:bg-brand-50"
-                    >
+                  <li class="mt-1 border-t border-line px-3 pt-2.5 pb-1.5">
+                    <a href="/services/" class="link text-sm">
                       All services
                     </a>
                   </li>
@@ -83,11 +60,7 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
             </li>
           ) : (
             <li>
-              <a
-                href={item.href}
-                class="rounded-full px-3 py-2 text-[15px] font-medium text-ink hover:bg-brand-50 hover:text-brand-700 aria-[current=page]:text-brand-700"
-                aria-current={isCurrent(item.href) ? 'page' : undefined}
-              >
+              <a href={item.href} class={navLink} aria-current={isCurrent(item.href) ? 'page' : undefined}>
                 {item.label}
               </a>
             </li>
@@ -96,17 +69,21 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
       </ul>
     </nav>
 
-    <div class="flex items-center gap-2">
+    <div class="flex items-center gap-4">
+      <a
+        href={site.phone.href}
+        class="hidden text-[15px] font-medium text-ink tabular-nums hover:text-brand-700 xl:block"
+      >
+        {site.phone.display}
+      </a>
       <div class="hidden sm:block">
-        <Button href="/request-appointment/" icon="calendar">
-          Request appointment
-        </Button>
+        <Button href="/request-appointment/">Request an appointment</Button>
       </div>
 
       <!-- Mobile menu: a native <details> disclosure, so it works without JavaScript. -->
       <details class="group/menu lg:hidden" data-mobile-menu>
         <summary
-          class="flex size-11 cursor-pointer list-none items-center justify-center rounded-full text-brand-800 hover:bg-brand-50 [&::-webkit-details-marker]:hidden"
+          class="-mr-2 flex size-11 cursor-pointer list-none items-center justify-center rounded-md text-brand-900 hover:bg-sand [&::-webkit-details-marker]:hidden"
           aria-label="Menu"
         >
           <Icon name="menu" class="size-6 group-open/menu:hidden" />
@@ -114,36 +91,34 @@ const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWi
         </summary>
         <nav
           aria-label="Mobile"
-          class="absolute inset-x-0 top-full max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-line bg-white shadow-lg"
+          class="absolute inset-x-0 top-full max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-line bg-surface"
         >
-          <div class="container-page pt-4 pb-24 sm:pb-4">
-            <p class="px-3 pb-1 text-xs font-semibold tracking-wide text-muted uppercase">Services</p>
-            <ul class="mb-3">
+          <div class="container-page pt-3 pb-28 sm:pb-6">
+            <p class="kicker pt-3 pb-2 text-muted">Services</p>
+            <ul class="divide-y divide-line border-y border-line">
               {services.map((s) => (
                 <li>
-                  <a href={s.href} class="block rounded-xl px-3 py-3 font-medium hover:bg-brand-50">
+                  <a href={s.href} class="flex items-center justify-between py-3.5 font-display text-xl">
                     {s.label}
+                    <Icon name="arrow-right" class="size-4 text-muted" />
                   </a>
                 </li>
               ))}
             </ul>
-            <ul class="border-t border-line pt-3">
+            <ul class="mt-5 grid grid-cols-2 gap-x-6 gap-y-1">
               {primaryNav
                 .filter((item) => item.href !== '/services/')
                 .map((item) => (
                   <li>
-                    <a href={item.href} class="block rounded-xl px-3 py-3 font-medium hover:bg-brand-50">
+                    <a href={item.href} class="block py-2 text-ink">
                       {item.label}
                     </a>
                   </li>
                 ))}
             </ul>
-            <div class="mt-4 grid gap-2 border-t border-line pt-4">
-              <Button href="/request-appointment/" size="lg" icon="calendar">
-                Request appointment
-              </Button>
-              <Button href={site.phone.href} size="lg" variant="secondary" icon="phone">
-                Call {site.phone.display}
+            <div class="mt-6 grid gap-2 sm:hidden">
+              <Button href="/request-appointment/" size="lg">
+                Request an appointment
               </Button>
             </div>
           </div>
