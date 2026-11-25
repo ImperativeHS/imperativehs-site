@@ -1,0 +1,20 @@
+---
+/** Card with magenta triangle corners, as on the original home page's Insurance / Referrals panels. */
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={['relative px-8 pt-16 pb-14 text-center sm:px-10', className]}>
+  <span
+    aria-hidden="true"
+    class="absolute top-0 left-0 size-9 bg-magenta [clip-path:polygon(0_0,100%_0,0_100%)] sm:size-12"
+  ></span>
+  <span
+    aria-hidden="true"
+    class="absolute right-0 bottom-0 size-9 bg-magenta [clip-path:polygon(100%_0,100%_100%,0_100%)] sm:size-12"
+  ></span>
+  <slot />
+</div>

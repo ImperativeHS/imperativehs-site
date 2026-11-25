@@ -2,51 +2,53 @@
 @plugin '@tailwindcss/typography';
 
 /*
- * Design tokens. Brand purple and blue come from the IHS logo.
- * Text colors on light backgrounds meet WCAG AA contrast.
+ * Design tokens, taken from the original imperativehs.com (Divi) design:
+ * Oswald for headings and buttons, Raleway for body copy, Open Sans for page titles,
+ * purple / magenta color blocks, a pink header band, and orange accent rules.
+ *
+ * Contrast notes: `magenta` and `sky` are for large text (headings, buttons) and
+ * backgrounds; use `magenta-dark` / `sky-dark` for small text on white.
  */
 @theme {
-  --font-sans: 'Inter Variable', ui-sans-serif, system-ui, sans-serif;
-  --font-display: 'Fraunces Variable', ui-serif, Georgia, serif;
+  --font-sans: 'Raleway Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-heading: 'Oswald Variable', 'Arial Narrow', ui-sans-serif, sans-serif;
+  --font-title: 'Open Sans', ui-sans-serif, system-ui, sans-serif; /* weight 800 only */
 
-  --color-brand-50: #f8f3f9;
-  --color-brand-100: #f0e4f2;
-  --color-brand-200: #e0c8e5;
-  --color-brand-300: #c99fd1;
-  --color-brand-400: #ac6fb8;
-  --color-brand-500: #924d9f;
-  --color-brand-600: #7e3489; /* logo purple */
-  --color-brand-700: #682b72;
-  --color-brand-800: #55245d;
-  --color-brand-900: #3f1b45;
-  --color-brand-950: #28102c;
+  --color-purple: #55286d;
+  --color-purple-dark: #3e1c51;
+  --color-plum: #4c0058;
+  --color-orchid: #7a0077; /* center of the purple pattern's glow */
+  --color-magenta: #ce49bf;
+  --color-magenta-dark: #a8369b;
+  --color-sky: #1396cc;
+  --color-sky-dark: #0f7fae;
+  --color-blush: #ffedf9;
+  --color-orange: #f4a03a;
+  --color-mist: #f4f4f4;
+  --color-cloud: #f2f3f5;
+  --color-field: #eeeeee; /* form field background */
 
-  --color-sky-brand-400: #3bb0e6;
-  --color-sky-brand-500: #1e9bd7; /* logo blue — decorative use only on white */
-  --color-sky-brand-700: #0b6a99; /* text-safe blue */
-
-  --color-ink: #24182a;
-  --color-muted: #5c5163;
-  --color-surface: #fdfbfd;
-  --color-line: #e8e0eb;
+  --color-ink: #1f1a24;
+  --color-muted: #55505a;
+  --color-line: #e2dde5;
+  --color-surface: #ffffff;
 }
 
 @layer base {
   html {
-    scroll-padding-top: 6rem;
+    scroll-padding-top: 5rem;
     -webkit-tap-highlight-color: transparent;
   }
 
   body {
-    @apply bg-surface font-sans text-ink antialiased;
-    text-rendering: optimizeLegibility;
+    @apply bg-surface font-sans text-[17px] leading-[1.8] text-ink antialiased;
   }
 
   h1,
   h2,
-  h3 {
-    @apply font-display text-brand-900;
-    font-optical-sizing: auto;
+  h3,
+  h4 {
+    @apply font-heading leading-tight uppercase;
     text-wrap: balance;
   }
 
@@ -55,7 +57,7 @@
   }
 
   :focus-visible {
-    @apply outline-2 outline-offset-2 outline-brand-600;
+    @apply outline-2 outline-offset-2 outline-sky;
   }
 
   @media (prefers-reduced-motion: no-preference) {
@@ -65,10 +67,22 @@
   }
 }
 
+/* Native cross-page fade between pages (no JavaScript; ignored by browsers without support). */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
+}
+
 @utility container-page {
-  @apply mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8;
+  @apply mx-auto w-full max-w-[1200px] px-5 sm:px-8;
+}
+
+/* Short orange rule under section headings, as on the original site. */
+@utility accent-rule {
+  @apply mt-4 block h-[3px] w-12 bg-orange;
 }
 
 @utility prose-ihs {
-  @apply prose max-w-none prose-slate prose-headings:font-display prose-headings:text-brand-900 prose-a:text-brand-700 prose-a:underline-offset-2 hover:prose-a:text-brand-900 prose-strong:text-ink prose-li:marker:text-brand-500;
+  @apply prose max-w-none prose-neutral prose-headings:font-heading prose-headings:font-normal prose-headings:text-magenta-dark prose-headings:uppercase prose-h2:text-3xl prose-h3:text-2xl prose-p:font-normal prose-p:text-ink prose-a:text-sky-dark prose-a:underline-offset-2 hover:prose-a:text-purple prose-strong:text-ink prose-li:marker:text-magenta;
 }

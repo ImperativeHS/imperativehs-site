@@ -5,6 +5,8 @@ seoTitle: In-Home Care Services | Licensed Maryland RSA
 description: Licensed and bonded Maryland Residential Service Agency (RSA) providing skilled nursing, personal care, dementia support, and respite care in the comfort of home.
 summary: Licensed, compassionate in-home care — from personal care and medication reminders to skilled nursing and dementia support.
 order: 4
+image: ../../assets/images/site/in-home-care.jpg
+imageAlt: A caregiver helping an older woman at home
 highlights:
   - title: Licensed and bonded in Maryland
     body: A fully licensed, bonded, and insured Residential Service Agency that meets state requirements and standards of care.

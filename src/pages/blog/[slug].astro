@@ -3,34 +3,50 @@ import type { GetStaticPaths } from 'astro';
 import { render } from 'astro:content';
 import Breadcrumbs from '@/components/sections/Breadcrumbs.astro';
 import CtaBand from '@/components/sections/CtaBand.astro';
+import Button from '@/components/ui/Button.astro';
 import Section from '@/components/ui/Section.astro';
+import { site } from '@/config/site';
 import BaseLayout from '@/layouts/BaseLayout.astro';
-import { formatDate, getPosts, postPath, type Post } from '@/lib/content';
+import {
+  formatDate,
+  getPosts,
+  getServices,
+  postPath,
+  readingMinutes,
+  relatedPosts,
+  servicePath,
+  type Post,
+} from '@/lib/content';
 import { articleSchema, breadcrumbSchema } from '@/lib/seo/structured-data';
 
 export const getStaticPaths = (async () => {
   const posts = await getPosts();
   return posts.map((post, i) => ({
     params: { slug: post.id },
-    // Posts are sorted newest first; suggest the neighbours as further reading.
-    props: { post, related: [posts[i - 1], posts[i + 1]].filter(Boolean) as Post[] },
+    // Posts are sorted newest first.
+    props: { post, newer: posts[i - 1], older: posts[i + 1], related: relatedPosts(post, posts) },
   }));
 }) satisfies GetStaticPaths;
 
 interface Props {
   post: Post;
+  newer?: Post;
+  older?: Post;
   related: Post[];
 }
 
-const { post, related } = Astro.props;
+const { post, newer, older, related } = Astro.props;
 const { data } = post;
-const { Content } = await render(post);
+const { Content, headings } = await render(post);
+const toc = headings.filter((h) => h.depth === 2);
+const services = await getServices();
 const path = postPath(post);
 const crumbs = [
   { name: 'Home', path: '/' },
   { name: 'Blog', path: '/blog/' },
   { name: data.title, path },
 ];
+const asideHeading = 'font-heading text-xl font-semibold text-purple uppercase';
 ---
 
 <BaseLayout
@@ -39,52 +55,138 @@ const crumbs = [
   type="article"
   jsonLd={[articleSchema({ ...data, path }), breadcrumbSchema(crumbs)]}
 >
-  <Section spacing="sm">
-    <article class="mx-auto max-w-3xl">
+  <section class="bg-purple text-white">
+    <div class="container-page py-12 text-center sm:py-16">
       <Breadcrumbs items={crumbs} />
-      <p class="text-sm font-semibold tracking-wide text-sky-brand-700 uppercase">{data.category}</p>
-      <h1 class="mt-3 text-4xl font-semibold sm:text-5xl">{data.title}</h1>
-      <p class="mt-4 text-sm text-muted">
+      <p class="font-heading text-lg tracking-[0.08em] text-blush uppercase">{data.category}</p>
+      <h1 class="mx-auto mt-3 max-w-4xl text-[34px] font-medium sm:text-[46px]">{data.title}</h1>
+      <span class="accent-rule mx-auto" aria-hidden="true"></span>
+      <p class="mt-5 text-[15px] font-light text-white/85">
         <time datetime={data.pubDate.toISOString()}>{formatDate(data.pubDate)}</time>
+        <span aria-hidden="true"> · </span>
+        {readingMinutes(post)} min read
         {data.updatedDate && (
           <>
-            · Updated <time datetime={data.updatedDate.toISOString()}>{formatDate(data.updatedDate)}</time>
+            <span aria-hidden="true"> · </span>
+            Updated <time datetime={data.updatedDate.toISOString()}>{formatDate(data.updatedDate)}</time>
           </>
         )}
       </p>
-      <div class="prose-ihs prose-lg mt-10">
-        <Content />
-      </div>
-      <p class="mt-12 rounded-2xl bg-brand-50 p-5 text-sm text-ink">
-        This article is for general information and isn’t a substitute for professional care. If you’re in
-        crisis, call or text{' '}
-        <a href="tel:988" class="font-semibold underline">
-          988
-        </a>
-        .
-      </p>
-    </article>
+    </div>
+  </section>
+
+  <Section>
+    <div class="grid gap-12 lg:grid-cols-[minmax(0,1fr)_20rem] lg:gap-16">
+      <article class="min-w-0">
+        <div class="prose-ihs prose-lg max-w-[70ch]">
+          <Content />
+        </div>
+        <p class="mt-12 max-w-[70ch] border-l-4 border-magenta bg-blush p-5 text-[15px]">
+          This article is for general information and isn’t a substitute for professional care. If you’re in
+          crisis, call or text{' '}
+          <a href={site.crisis.lifeline.href} class="font-semibold underline">
+            {site.crisis.lifeline.display}
+          </a>
+          .
+        </p>
+
+        <nav
+          aria-label="More articles"
+          class="mt-10 grid max-w-[70ch] gap-4 border-t border-line pt-8 sm:grid-cols-2"
+        >
+          {older && (
+            <a href={postPath(older)} class="group block">
+              <span class="font-heading text-sm tracking-[0.06em] text-muted uppercase">← Previous</span>
+              <span class="mt-1 block font-heading text-lg text-purple uppercase group-hover:text-magenta-dark">
+                {older.data.title}
+              </span>
+            </a>
+          )}
+          {newer && (
+            <a href={postPath(newer)} class="group block sm:col-start-2 sm:text-right">
+              <span class="font-heading text-sm tracking-[0.06em] text-muted uppercase">Next →</span>
+              <span class="mt-1 block font-heading text-lg text-purple uppercase group-hover:text-magenta-dark">
+                {newer.data.title}
+              </span>
+            </a>
+          )}
+        </nav>
+      </article>
+
+      <aside class="space-y-8 lg:self-start">
+        {toc.length >= 3 && (
+          <nav
+            aria-labelledby="toc-heading"
+            class="border-t-4 border-magenta bg-white p-6 shadow-[0_2px_12px_rgb(0_0_0/0.06)]"
+          >
+            <h2 id="toc-heading" class={asideHeading}>
+              In this article
+            </h2>
+            <ol class="mt-4 space-y-2 text-[15px]">
+              {toc.map((h) => (
+                <li>
+                  <a href={`#${h.slug}`} class="text-ink hover:text-magenta-dark hover:underline">
+                    {h.text}
+                  </a>
+                </li>
+              ))}
+            </ol>
+          </nav>
+        )}
+
+        <div class="bg-blush p-6">
+          <h2 class="text-2xl font-semibold text-magenta">Talk to someone</h2>
+          <span class="accent-rule" aria-hidden="true"></span>
+          <p class="mt-4 text-[15px] font-light">
+            If something in this article sounds familiar, our team is here to help. No referral needed.
+          </p>
+          <Button href="/request-appointment/" variant="purple" size="sm" class="mt-5 w-full">
+            Request appointment
+          </Button>
+          <p class="mt-3 text-center">
+            <a href={site.phone.href} class="font-heading text-lg text-purple hover:text-sky">
+              or call {site.phone.display}
+            </a>
+          </p>
+        </div>
+
+        <nav aria-labelledby="services-heading" class="bg-cloud p-6">
+          <h2 id="services-heading" class={asideHeading}>
+            Our services
+          </h2>
+          <ul class="mt-4 space-y-2 text-[15px]">
+            {services.map((s) => (
+              <li>
+                <a href={servicePath(s)} class="text-ink hover:text-magenta-dark hover:underline">
+                  {s.data.shortTitle}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </aside>
+    </div>
   </Section>
 
   {related.length > 0 && (
-    <Section tone="tint" spacing="sm" labelledby="related-heading">
-      <div class="mx-auto max-w-3xl">
-        <h2 id="related-heading" class="text-2xl font-semibold">
-          Keep reading
-        </h2>
-        <ul class="mt-6 grid gap-4 sm:grid-cols-2">
-          {related.map((p) => (
-            <li class="relative rounded-2xl bg-white p-5 ring-1 ring-line hover:ring-brand-200">
-              <a
-                href={postPath(p)}
-                class="font-semibold text-ink after:absolute after:inset-0 hover:text-brand-700"
-              >
+    <Section tone="cloud" labelledby="related-heading">
+      <h2 id="related-heading" class="text-center text-[32px] font-semibold text-magenta">
+        Related articles
+      </h2>
+      <span class="accent-rule mx-auto" aria-hidden="true"></span>
+      <ul class="mt-10 grid gap-8 md:grid-cols-3">
+        {related.map((p) => (
+          <li class="group relative flex flex-col border-t-4 border-magenta bg-white p-7 shadow-[0_2px_12px_rgb(0_0_0/0.06)] transition-shadow hover:shadow-[0_6px_24px_rgb(0_0_0/0.12)]">
+            <p class="font-heading text-sm tracking-[0.06em] text-sky-dark uppercase">{p.data.category}</p>
+            <h3 class="mt-2 text-[21px] font-medium text-purple group-hover:text-magenta-dark">
+              <a href={postPath(p)} class="after:absolute after:inset-0">
                 {p.data.title}
               </a>
-            </li>
-          ))}
-        </ul>
-      </div>
+            </h3>
+            <p class="mt-3 line-clamp-3 flex-1 text-[15px]">{p.data.description}</p>
+          </li>
+        ))}
+      </ul>
     </Section>
   )}
 

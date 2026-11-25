@@ -33,6 +33,7 @@ async function sendWithResend(
 ): Promise<void> {
   const response = await fetch('https://api.resend.com/emails', {
     method: 'POST',
+    signal: AbortSignal.timeout(10_000),
     headers: {
       Authorization: `Bearer ${config.apiKey}`,
       'Content-Type': 'application/json',
@@ -47,7 +48,7 @@ async function sendWithResend(
     }),
   });
   if (!response.ok) {
-    throw new Error(`Resend responded ${response.status}: ${await response.text()}`);
+    throw new Error(`Resend responded ${response.status}: ${(await response.text()).slice(0, 300)}`);
   }
 }
 

@@ -19,17 +19,19 @@ const crumbs = [
   jsonLd={[breadcrumbSchema(crumbs)]}
 >
   <PageHero
-    title="Insurance we accept"
+    title="Insurance"
+    tagline="Insurance providers accepted"
     lead="We want cost to be one less thing to worry about. We accept the plans below and are happy to help you check your coverage."
     breadcrumbs={crumbs}
   />
 
-  <Section spacing="sm">
+  <Section>
     <div class="grid gap-12 lg:grid-cols-[1fr_22rem]">
       <div>
-        <h2 class="text-2xl font-semibold">Accepted plans</h2>
+        <h2 class="text-[30px] font-semibold text-magenta">Accepted Plans</h2>
+        <span class="accent-rule" aria-hidden="true"></span>
         <div class="mt-6">
-          <InsuranceList />
+          <InsuranceList columns={2} />
         </div>
 
         <div class="prose-ihs mt-12">
@@ -46,7 +48,7 @@ const crumbs = [
           </ul>
         </div>
       </div>
-      <div class="lg:sticky lg:top-28 lg:self-start">
+      <div class="lg:self-start">
         <ContactCard />
       </div>
     </div>

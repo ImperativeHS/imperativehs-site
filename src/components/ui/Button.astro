@@ -2,59 +2,59 @@
 import type { HTMLAttributes } from 'astro/types';
 import Icon, { type IconName } from './Icon.astro';
 
-type Variant = 'primary' | 'secondary' | 'light' | 'ghost';
-type Size = 'md' | 'lg';
+type Variant = 'sky' | 'purple' | 'magenta' | 'white' | 'outline-white';
+type Size = 'sm' | 'md' | 'lg';
 
 type Props = (HTMLAttributes<'a'> & HTMLAttributes<'button'>) & {
   href?: string;
   variant?: Variant;
   size?: Size;
   icon?: IconName;
-  iconPosition?: 'start' | 'end';
+  /** Wide letter-spacing, like the original site's "CLICK HERE FOR…" buttons. */
+  spaced?: boolean;
 };
 
 const {
   href,
-  variant = 'primary',
+  variant = 'purple',
   size = 'md',
   icon,
-  iconPosition = 'start',
+  spaced = false,
   class: className,
   type = 'button',
   ...rest
 } = Astro.props;
 
 const variants: Record<Variant, string> = {
-  primary: 'bg-brand-600 text-white shadow-sm hover:bg-brand-700 active:bg-brand-800',
-  secondary:
-    'bg-white text-brand-700 ring-1 ring-brand-200 ring-inset hover:bg-brand-50 hover:ring-brand-300',
-  light: 'bg-white text-brand-800 shadow-sm hover:bg-brand-50',
-  ghost: 'text-brand-700 hover:bg-brand-50',
+  sky: 'bg-sky text-white hover:bg-sky-dark',
+  purple: 'bg-purple text-white hover:bg-purple-dark',
+  magenta: 'bg-magenta text-white hover:bg-magenta-dark',
+  white: 'bg-white text-purple hover:bg-blush',
+  'outline-white': 'text-white ring-2 ring-white/70 ring-inset hover:bg-white hover:text-purple',
 };
 const sizes: Record<Size, string> = {
-  md: 'px-4 py-2.5 text-sm gap-2',
-  lg: 'px-6 py-3.5 text-base gap-2.5',
+  sm: 'px-5 py-2 text-[17px]',
+  md: 'px-6 py-3 text-[19px]',
+  lg: 'px-6 py-4 text-[17px] sm:px-9 sm:py-5 sm:text-[19px]',
 };
 
 const classes = [
-  'inline-flex items-center justify-center rounded-full font-semibold transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-60',
+  'inline-flex items-center justify-center gap-2.5 rounded-[3px] text-center font-heading font-medium uppercase transition-colors duration-200',
+  spaced ? 'tracking-[0.1em] sm:tracking-[0.18em]' : 'tracking-[0.06em]',
   variants[variant],
   sizes[size],
   className,
 ];
-const iconClass = size === 'lg' ? 'size-5' : 'size-4';
 ---
 
 {href ? (
   <a href={href} class:list={classes} {...rest}>
-    {icon && iconPosition === 'start' && <Icon name={icon} class={iconClass} />}
     <slot />
-    {icon && iconPosition === 'end' && <Icon name={icon} class={iconClass} />}
+    {icon && <Icon name={icon} class="size-[1.05em]" />}
   </a>
 ) : (
   <button type={type} class:list={classes} {...rest}>
-    {icon && iconPosition === 'start' && <Icon name={icon} class={iconClass} />}
     <slot />
-    {icon && iconPosition === 'end' && <Icon name={icon} class={iconClass} />}
+    {icon && <Icon name={icon} class="size-[1.05em]" />}
   </button>
 )}

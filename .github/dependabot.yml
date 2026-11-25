@@ -1,0 +1,18 @@
+# Weekly pull requests for dependency updates (security fixes arrive as they're published).
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      astro:
+        patterns: ['astro', '@astrojs/*']
+      tooling:
+        patterns: ['*']
+        exclude-patterns: ['astro', '@astrojs/*']
+    open-pull-requests-limit: 5
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: monthly

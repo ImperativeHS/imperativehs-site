@@ -28,12 +28,13 @@ const crumbs = [
   jsonLd={[breadcrumbSchema(crumbs)]}
 >
   <PageHero
-    title="Request an appointment"
+    title="Request Appointment"
+    tagline="Start your mental health care journey with us"
     lead="Share a few details and our team will contact you to schedule your first visit. It takes about a minute."
     breadcrumbs={crumbs}
   />
 
-  <Section spacing="sm">
+  <Section>
     <div class="grid gap-10 lg:grid-cols-[1fr_22rem]">
       <FormShell name="appointment" submitLabel="Send request">
         <ChoiceGroup
@@ -87,7 +88,7 @@ const crumbs = [
         </ConsentCheckbox>
       </FormShell>
 
-      <div class="space-y-6 lg:sticky lg:top-28 lg:self-start">
+      <div class="space-y-6 lg:self-start">
         <ContactCard />
       </div>
     </div>

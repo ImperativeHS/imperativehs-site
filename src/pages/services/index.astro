@@ -2,7 +2,7 @@
 import CtaBand from '@/components/sections/CtaBand.astro';
 import PageHero from '@/components/sections/PageHero.astro';
 import ServiceCards from '@/components/sections/ServiceCards.astro';
-import Section from '@/components/ui/Section.astro';
+import ScreeningCallout from '@/components/sections/ScreeningCallout.astro';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { breadcrumbSchema } from '@/lib/seo/structured-data';
 
@@ -18,12 +18,12 @@ const crumbs = [
   jsonLd={[breadcrumbSchema(crumbs)]}
 >
   <PageHero
-    title="Our services"
-    lead="Integrated care for mental health, recovery, and daily living — for children, teens, adults, and families."
+    title="Our Services"
+    tagline="Integrated care for mental health, recovery, and daily living"
+    lead="Outpatient mental health care, psychiatric rehabilitation, substance use treatment, and in-home support for children, teens, adults, and families."
     breadcrumbs={crumbs}
   />
-  <Section spacing="sm">
-    <ServiceCards headingLevel="h2" />
-  </Section>
+  <ServiceCards headingLevel="h2" />
+  <ScreeningCallout />
   <CtaBand />
 </BaseLayout>

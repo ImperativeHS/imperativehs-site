@@ -1,0 +1,13 @@
+---
+/**
+ * The purple ornamental background from the original site's footer and feature bands.
+ * Place inside a `relative isolate overflow-hidden` element; content above it needs no z-index.
+ */
+import { Image } from 'astro:assets';
+import pattern from '@/assets/images/site/pattern-purple.jpg';
+---
+
+<div aria-hidden="true" class="absolute inset-0 -z-10 bg-plum">
+  <Image src={pattern} alt="" widths={[650, 1300]} sizes="100vw" class="size-full object-cover" />
+  <div class="absolute inset-0 bg-radial from-orchid/55 to-plum/85"></div>
+</div>

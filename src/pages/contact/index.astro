@@ -20,22 +20,23 @@ const crumbs = [
   jsonLd={[breadcrumbSchema(crumbs)]}
 >
   <PageHero
-    title="Contact us"
-    lead="We’d love to hear from you. For appointments, the fastest way is to call or use our appointment request form."
+    title="Contact Us"
+    tagline="We’d love to hear from you"
+    lead="For appointments, the fastest way is to call us or use our appointment request form."
     breadcrumbs={crumbs}
   >
-    <Button href="/request-appointment/" icon="calendar">
+    <Button href="/request-appointment/" variant="sky" icon="calendar-check">
       Request an appointment
     </Button>
   </PageHero>
 
-  <Section spacing="sm">
+  <Section>
     <div class="grid gap-10 lg:grid-cols-[22rem_1fr]">
-      <div class="lg:sticky lg:top-28 lg:self-start">
+      <div class="lg:self-start">
         <ContactCard />
       </div>
       <div>
-        <h2 class="mb-6 text-2xl font-semibold">Send a message</h2>
+        <h2 class="mb-8 text-[30px] font-semibold text-magenta">Send a Message</h2>
         <FormShell name="contact" submitLabel="Send message">
           <div class="grid gap-6 sm:grid-cols-2">
             <TextField

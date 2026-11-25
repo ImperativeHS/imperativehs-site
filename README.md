@@ -109,6 +109,28 @@ Set these as **secrets** on the Cloudflare Worker (Dashboard → Workers → imp
 | `TURNSTILE_SECRET_KEY`      | Optional Cloudflare Turnstile secret                                                                      |
 | `PUBLIC_TURNSTILE_SITE_KEY` | Optional Turnstile site key (build-time; set it as a build variable too)                                  |
 
+## Security
+
+- **Content Security Policy:** Astro adds a CSP `<meta>` tag to every page with hashes for its own scripts
+  and styles (`security.csp` in `astro.config.mjs`). Only same-origin resources and Cloudflare Turnstile
+  are allowed. Inline `style="…"` attributes and inline scripts that Astro doesn't process are blocked,
+  so use Tailwind classes and normal `<script>` tags. To allow a new third-party script, add its origin
+  to the CSP config. The policy is only active in production builds (`npm run preview`), not `npm run dev`.
+- **Headers:** `public/_headers` adds `frame-ancestors 'none'`, HSTS, `nosniff`, a strict referrer policy,
+  COOP, and a Permissions-Policy that disables camera, microphone, location, and payment APIs.
+- **Forms:** same-origin posts only (Astro's origin check), a 20 KB body limit enforced on the bytes
+  received, a content-type allowlist, Zod validation, a honeypot, optional Turnstile, timeouts on
+  outbound calls, and `no-store` responses. Submitted values are never logged.
+- **Dependencies:** Dependabot opens weekly update PRs, and CI fails on high/critical advisories in
+  production dependencies (`npm audit --omit=dev --audit-level=high`).
+
+## Performance
+
+Pages are static HTML on Cloudflare's edge. Links are prefetched when they scroll into view
+(`prefetch` in `astro.config.mjs`), pages cross-fade with the native View Transitions API, the two
+above-the-fold fonts are preloaded, images are converted to WebP at build time, and hashed assets under
+`/_astro/` are cached for a year.
+
 ## Deployment (Cloudflare Workers)
 
 1. In Cloudflare, go to **Workers & Pages → Create → Import a repository** and pick this repo.
@@ -122,8 +144,8 @@ Set these as **secrets** on the Cloudflare Worker (Dashboard → Workers → imp
    Cloudflare before switching nameservers.
 5. Enable **Web Analytics** for the site in Cloudflare (cookie-free, no ad tracking).
 
-The Astro adapter also provisions a `SESSION` KV namespace on first deploy. The site doesn't use
-sessions, so this is harmless and free.
+Astro sessions are turned off (`session: false` in `astro.config.mjs`), so the Worker needs no KV
+namespace. Without that setting, preview uploads fail trying to create one.
 
 ## Git workflow
 

@@ -33,6 +33,8 @@ export const site = {
     { label: 'Saturday', value: 'By appointment only' },
     { label: 'Sunday', value: 'Closed' },
   ],
+  /** Short two-line version for the header and contact card. */
+  hoursSummary: ['Mon–Fri: 9 am to 7:00 pm', 'Open on Saturdays by appointment only'],
   /** Machine-readable hours for structured data (schema.org OpeningHoursSpecification). */
   openingHours: [
     {

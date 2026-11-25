@@ -23,6 +23,13 @@ the answer was applied. Search the code for `TODO(content)` to find the spots ea
 - [ ] **Blog review:** 34 posts were migrated as-is (one off-topic seizure post dropped, all stock images
       removed). Several say "our psychiatrists". Prune or edit as needed (`src/content/blog/`).
 - [ ] **Photos:** office, team, and any real photography (`src/assets/images/`).
+- [ ] **Stock photo licenses:** the new site reuses the old site's stock photos (`src/assets/images/site/`).
+      Confirm with whoever built the old site that they were licensed for IHS. Two old-site images were left
+      out because their file names look like unlicensed previews (`gettyimages-919539204-612x612` and an Adobe
+      Stock `1000_F_…` file).
+- [ ] **Testimonials:** the old home page showed client reviews (e.g. "Kenneth Liu", "Jennifer White") with
+      stock-looking headshots. They were not carried over. If they are real, with permission to publish,
+      they can be added back; invented or paid-for-but-undisclosed reviews break FTC rules.
 
 ## Compliance / vendors
 
@@ -35,14 +42,30 @@ the answer was applied. Search the code for `TODO(content)` to find the spots ea
 - [ ] **Lovable apps:** check whether the screening tool (`intake.imperativehs.com`) and its database are
       covered by a BAA, since people enter PHQ-9/GAD-7 answers there.
 
+- [ ] **Spam protection (Turnstile):** create a free Turnstile widget in Cloudflare (Dashboard → Turnstile)
+      for `imperativehs.com` and add `PUBLIC_TURNSTILE_SITE_KEY` (build variable) and
+      `TURNSTILE_SECRET_KEY` (secret) to the Worker. The forms switch it on automatically.
+- [ ] **Rate limiting:** once the domain is on Cloudflare, add a WAF rate-limiting rule for
+      `/api/forms/*` (e.g. 5 requests per minute per IP). The free plan includes one rule.
+- [ ] **GitHub branch protection:** require a pull request and passing CI before merging to `main`
+      (Settings → Branches → Add rule). Also decide whether the repo should be private.
+- [ ] **Known build-time advisory:** `npm audit` reports a moderate issue in `postcss-selector-parser`
+      (via `@tailwindcss/typography`). It only runs during the build, not on the live site; Dependabot
+      will pick up the fix when one is released.
+
 ## Integrations (later)
 
 - [ ] **Zocdoc "Book online" button:** Zocdoc offers one for practice websites. Could be added as a link or
       button on `/request-appointment/`.
 - [ ] **ICANotes:** ask the ICANotes rep whether they offer an embeddable appointment-request or intake form.
 - [ ] **Submissions dashboard:** revisit once form volume is known.
+- [ ] **Review/comment widget:** a click-to-comment feedback tool for reviewers, loaded on preview links
+      only (never production). Waiting on which tool to use.
 
 ## Launch checklist
+
+- [ ] Close the earlier redesign PR (#1, `feat/visual-refresh`). It was replaced by the classic-design
+      branch, which keeps the original site's look.
 
 - [ ] Connect the repo to Cloudflare Workers (see README → Deployment) and add secrets.
 - [ ] Verify the sending domain in Resend (DNS records), then submit each form on the preview URL.

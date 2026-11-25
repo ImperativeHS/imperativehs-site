@@ -5,9 +5,13 @@ seoTitle: Substance Use Disorder Treatment in Hyattsville, MD
 description: Compassionate, trauma-informed substance use disorder treatment for teens and adults in Prince George’s County, MD — therapy, dual diagnosis care, and family support. Medicaid accepted.
 summary: Trauma-informed, evidence-based support for teens and adults working toward recovery — and for the families who love them.
 order: 3
+image: ../../assets/images/site/recovery-session.jpg
+imageAlt: A young man in a counseling session
 highlights:
   - title: Trauma-informed care
     body: We treat substance use as a response to deeper pain and life challenges — never with judgment.
+    image: ../../assets/images/site/recovery-support.jpg
+    imageAlt: A counselor and a client working together at a desk
   - title: Dual diagnosis treatment
     body: Integrated care for co-occurring mental health conditions such as depression, anxiety, and trauma.
   - title: Flexible scheduling

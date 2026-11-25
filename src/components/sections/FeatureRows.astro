@@ -1,0 +1,77 @@
+---
+/**
+ * Service highlights in the original site's layout: items with a photo become
+ * alternating photo/text rows; consecutive items without a photo are grouped
+ * into a purple patterned band.
+ */
+import type { ImageMetadata } from 'astro';
+import { Image } from 'astro:assets';
+import PatternBackground from '@/components/ui/PatternBackground.astro';
+
+interface Feature {
+  title: string;
+  body: string;
+  image?: ImageMetadata;
+  imageAlt?: string;
+}
+
+interface Props {
+  items: Feature[];
+}
+
+const { items } = Astro.props;
+
+type Group = { kind: 'row'; item: Feature; index: number } | { kind: 'band'; items: Feature[] };
+const groups: Group[] = [];
+let rowIndex = 0;
+for (const item of items) {
+  const last = groups.at(-1);
+  if (item.image) groups.push({ kind: 'row', item, index: rowIndex++ });
+  else if (last?.kind === 'band') last.items.push(item);
+  else groups.push({ kind: 'band', items: [item] });
+}
+---
+
+{groups.map((group) =>
+  group.kind === 'row' ? (
+    <section class="grid md:grid-cols-2">
+      <Image
+        src={group.item.image!}
+        alt={group.item.imageAlt ?? ''}
+        widths={[480, 720, 960]}
+        sizes="(min-width: 768px) 50vw, 100vw"
+        class:list={['aspect-[16/10] h-full w-full object-cover', group.index % 2 === 1 && 'md:order-2']}
+      />
+      <div
+        class:list={[
+          'flex flex-col justify-center px-6 py-12 sm:px-12 lg:px-[72px]',
+          group.index % 2 === 1 ? 'bg-purple text-white' : 'bg-white',
+        ]}
+      >
+        <h2 class="text-[32px] font-light tracking-[0.02em] text-magenta sm:text-[38px]">
+          {group.item.title}
+        </h2>
+        <p class:list={['mt-4 text-lg font-light', group.index % 2 === 1 && 'text-white/95']}>
+          {group.item.body}
+        </p>
+      </div>
+    </section>
+  ) : (
+    <section class="relative isolate overflow-hidden text-white">
+      <PatternBackground />
+      <div
+        class:list={[
+          'container-page grid gap-12 py-16 text-center sm:py-20',
+          group.items.length > 1 && 'md:grid-cols-2',
+        ]}
+      >
+        {group.items.map((item) => (
+          <div>
+            <h2 class="text-[30px] font-light tracking-[0.02em] sm:text-[34px]">{item.title}</h2>
+            <p class="mx-auto mt-4 max-w-lg text-[17px] font-light text-white/95">{item.body}</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  ),
+)}

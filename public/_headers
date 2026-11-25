@@ -1,8 +1,13 @@
+# Security and caching headers for static files (Cloudflare _headers format).
+# The page-level Content-Security-Policy (script/style hashes) is a <meta> tag that Astro
+# generates; see `security.csp` in astro.config.mjs. Header and meta policies both apply.
 /*
+  Content-Security-Policy: frame-ancestors 'none'; base-uri 'self'; object-src 'none'; form-action 'self'
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   X-Frame-Options: DENY
-  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
+  Cross-Origin-Opener-Policy: same-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), payment=(), usb=(), browsing-topics=(), interest-cohort=()
   Strict-Transport-Security: max-age=31536000; includeSubDomains
 
 /_astro/*
