@@ -3,30 +3,38 @@ import Breadcrumbs, { type Crumb } from './Breadcrumbs.astro';
 
 interface Props {
   title: string;
+  /** Magenta Oswald line in the grey band (the original site's page taglines). */
+  tagline?: string;
+  /** Intro paragraph in the grey band. */
   lead?: string;
-  eyebrow?: string;
   breadcrumbs?: Crumb[];
 }
 
-const { title, lead, eyebrow, breadcrumbs } = Astro.props;
+const { title, tagline, lead, breadcrumbs } = Astro.props;
+const hasBand = Boolean(tagline || lead || Astro.slots.has('default'));
 ---
 
-<section class="relative overflow-hidden bg-gradient-to-b from-brand-50 to-surface">
-  <div
-    aria-hidden="true"
-    class="pointer-events-none absolute -top-24 -right-24 size-80 rounded-full bg-brand-200/40 blur-3xl"
-  ></div>
-  <div class="container-page relative py-12 sm:py-16">
+<section class="bg-purple text-white">
+  <div class="container-page py-14 text-center sm:py-20">
     {breadcrumbs && <Breadcrumbs items={breadcrumbs} />}
-    {eyebrow && (
-      <p class="mb-2 text-sm font-semibold tracking-wide text-sky-brand-700 uppercase">{eyebrow}</p>
-    )}
-    <h1 class="max-w-3xl text-4xl font-semibold sm:text-5xl">{title}</h1>
-    {lead && <p class="mt-5 max-w-2xl text-lg text-muted sm:text-xl">{lead}</p>}
-    {Astro.slots.has('default') && (
-      <div class="mt-8 flex flex-wrap gap-3">
-        <slot />
-      </div>
-    )}
+    <h1 class="font-title text-[34px] leading-tight font-extrabold sm:text-[52px]">{title}</h1>
   </div>
 </section>
+
+{hasBand && (
+  <section class="bg-mist">
+    <div class="container-page py-10 text-center sm:py-12">
+      {tagline && (
+        <p class="font-heading text-2xl font-light text-magenta-dark uppercase sm:text-[28px]">{tagline}</p>
+      )}
+      {lead && (
+        <p class:list={['mx-auto max-w-4xl text-lg font-light sm:text-xl', tagline && 'mt-4']}>{lead}</p>
+      )}
+      {Astro.slots.has('default') && (
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-3">
+          <slot />
+        </div>
+      )}
+    </div>
+  </section>
+)}

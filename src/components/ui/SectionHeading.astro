@@ -1,31 +1,72 @@
 ---
 interface Props {
   title: string;
-  eyebrow?: string;
   intro?: string;
   id?: string;
   align?: 'start' | 'center';
-  /** For headings on the dark brand background. */
-  inverted?: boolean;
+  /** Heading color. */
+  tone?: 'magenta' | 'purple' | 'white' | 'sky';
+  /** `bold` = Oswald semibold (section titles); `light` = Oswald light (feature titles). */
+  weight?: 'bold' | 'light';
+  /** Short orange rule under the title. */
+  rule?: boolean;
+  /** Blue bar to the left of the title. */
+  bar?: boolean;
+  size?: 'sm' | 'md' | 'lg';
   as?: 'h1' | 'h2' | 'h3';
+  class?: string;
 }
 
-const { title, eyebrow, intro, id, align = 'start', inverted = false, as: Tag = 'h2' } = Astro.props;
+const {
+  title,
+  intro,
+  id,
+  align = 'start',
+  tone = 'magenta',
+  weight = 'bold',
+  rule = false,
+  bar = false,
+  size = 'md',
+  as: Tag = 'h2',
+  class: className,
+} = Astro.props;
+
+const tones = {
+  magenta: 'text-magenta',
+  purple: 'text-purple',
+  white: 'text-white',
+  sky: 'text-sky',
+};
+const sizes = {
+  sm: 'text-2xl sm:text-[28px]',
+  md: 'text-[32px] sm:text-[40px]',
+  lg: 'text-[38px] sm:text-[48px]',
+};
 ---
 
-<div class:list={['max-w-2xl', align === 'center' && 'mx-auto text-center']}>
-  {eyebrow && (
-    <p
+<div class:list={[align === 'center' && 'text-center', className]}>
+  <div class:list={[bar && 'border-l-[6px] border-sky pl-8']}>
+    <Tag
+      id={id}
       class:list={[
-        'mb-2 text-sm font-semibold tracking-wide uppercase',
-        inverted ? 'text-brand-200' : 'text-sky-brand-700',
+        tones[tone],
+        sizes[size],
+        weight === 'bold' ? 'font-semibold' : 'font-light tracking-[0.02em]',
       ]}
     >
-      {eyebrow}
+      {title}
+    </Tag>
+  </div>
+  {rule && <span class:list={['accent-rule', align === 'center' && 'mx-auto']} aria-hidden="true"></span>}
+  {intro && (
+    <p
+      class:list={[
+        'mt-5 text-lg font-light',
+        align === 'center' && 'mx-auto max-w-3xl',
+        tone === 'white' ? 'text-white/90' : 'text-ink',
+      ]}
+    >
+      {intro}
     </p>
   )}
-  <Tag id={id} class:list={['text-3xl font-semibold sm:text-4xl', inverted && 'text-white']}>
-    {title}
-  </Tag>
-  {intro && <p class:list={['mt-4 text-lg', inverted ? 'text-brand-100' : 'text-muted']}>{intro}</p>}
 </div>

@@ -1,22 +1,19 @@
 ---
 import Icon from '@/components/ui/Icon.astro';
 import { site } from '@/config/site';
+
+const base =
+  'flex items-center justify-center gap-2 rounded-[3px] py-3 font-heading text-[17px] font-medium tracking-[0.06em] text-white uppercase';
 ---
 
 <!-- Fixed bottom actions on small screens; the footer reserves space for it (pb-24). -->
-<div class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-2 border-t border-line bg-white/95 p-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] backdrop-blur sm:hidden">
-  <a
-    href={site.phone.href}
-    class="flex items-center justify-center gap-2 rounded-full bg-white py-3 text-sm font-semibold text-brand-700 ring-1 ring-brand-200 ring-inset"
-  >
+<div class="fixed inset-x-0 bottom-0 z-40 grid grid-cols-2 gap-2 bg-white p-2 pb-[max(0.5rem,env(safe-area-inset-bottom))] shadow-[0_-2px_10px_rgb(0_0_0/0.1)] sm:hidden">
+  <a href={site.phone.href} class:list={[base, 'bg-purple']}>
     <Icon name="phone" class="size-4" />
     Call us
   </a>
-  <a
-    href="/request-appointment/"
-    class="flex items-center justify-center gap-2 rounded-full bg-brand-600 py-3 text-sm font-semibold text-white"
-  >
-    <Icon name="calendar" class="size-4" />
-    Request visit
+  <a href="/request-appointment/" class:list={[base, 'bg-sky']}>
+    <Icon name="calendar-check" class="size-4" />
+    Appointment
   </a>
 </div>

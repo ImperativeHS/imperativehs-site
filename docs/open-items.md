@@ -23,6 +23,13 @@ the answer was applied. Search the code for `TODO(content)` to find the spots ea
 - [ ] **Blog review:** 34 posts were migrated as-is (one off-topic seizure post dropped, all stock images
       removed). Several say "our psychiatrists". Prune or edit as needed (`src/content/blog/`).
 - [ ] **Photos:** office, team, and any real photography (`src/assets/images/`).
+- [ ] **Stock photo licenses:** the new site reuses the old site's stock photos (`src/assets/images/site/`).
+      Confirm with whoever built the old site that they were licensed for IHS. Two old-site images were left
+      out because their file names look like unlicensed previews (`gettyimages-919539204-612x612` and an Adobe
+      Stock `1000_F_…` file).
+- [ ] **Testimonials:** the old home page showed client reviews (e.g. "Kenneth Liu", "Jennifer White") with
+      stock-looking headshots. They were not carried over. If they are real, with permission to publish,
+      they can be added back; invented or paid-for-but-undisclosed reviews break FTC rules.
 
 ## Compliance / vendors
 
@@ -43,6 +50,9 @@ the answer was applied. Search the code for `TODO(content)` to find the spots ea
 - [ ] **Submissions dashboard:** revisit once form volume is known.
 
 ## Launch checklist
+
+- [ ] Close the earlier redesign PR (#1, `feat/visual-refresh`). It was replaced by the classic-design
+      branch, which keeps the original site's look.
 
 - [ ] Connect the repo to Cloudflare Workers (see README → Deployment) and add secrets.
 - [ ] Verify the sending domain in Resend (DNS records), then submit each form on the preview URL.

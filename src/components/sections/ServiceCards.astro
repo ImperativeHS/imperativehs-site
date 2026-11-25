@@ -1,5 +1,6 @@
 ---
-import Icon, { type IconName } from '@/components/ui/Icon.astro';
+import { Image } from 'astro:assets';
+import Button from '@/components/ui/Button.astro';
 import { getServices, servicePath } from '@/lib/content';
 
 interface Props {
@@ -10,41 +11,47 @@ interface Props {
 
 const { exclude, headingLevel: Heading = 'h3' } = Astro.props;
 
-const icons: Record<string, IconName> = {
-  'mental-health': 'heart',
-  'psychiatric-rehabilitation': 'users',
-  'substance-use': 'shield-check',
-  'residential-services': 'home',
-};
-
 const services = (await getServices()).filter((s) => s.id !== exclude);
+// Purple and magenta alternate in a checkerboard, like the original home page blocks.
+const isPurple = (i: number) => (Math.floor(i / 2) + i) % 2 === 0;
+// An odd one out at the end spans the full width.
+const spansRow = (i: number) => services.length % 2 === 1 && i === services.length - 1;
 ---
 
-<ul
-  class:list={[
-    'grid gap-6 sm:grid-cols-2',
-    services.length > 3 && 'lg:grid-cols-4',
-    services.length === 3 && 'lg:grid-cols-3',
-  ]}
->
-  {services.map((s) => (
-    <li class="group relative flex flex-col rounded-3xl bg-white p-7 shadow-sm ring-1 ring-line transition hover:shadow-md hover:ring-brand-200">
-      <span class="flex size-12 items-center justify-center rounded-2xl bg-brand-100 text-brand-700">
-        <Icon name={icons[s.id] ?? 'heart'} class="size-6" />
-      </span>
-      <Heading class="mt-5 text-xl font-semibold">
-        <a href={servicePath(s)} class="after:absolute after:inset-0 after:rounded-3xl">
-          {s.data.shortTitle}
-        </a>
+<ul class="grid md:grid-cols-2">
+  {services.map((s, i) => (
+    <li
+      class:list={[
+        'flex flex-col items-center px-6 py-14 text-center text-white sm:px-12 lg:px-[72px] lg:py-[88px]',
+        isPurple(i) ? 'bg-purple' : 'bg-magenta',
+        spansRow(i) && 'md:col-span-2',
+      ]}
+    >
+      <Image
+        src={s.data.image}
+        alt={s.data.imageAlt}
+        widths={[480, 720, 1000]}
+        sizes="(min-width: 768px) 576px, 100vw"
+        class="aspect-[16/9] w-full max-w-[576px] object-cover"
+      />
+      <Heading class="mt-8 text-[30px] font-light tracking-[0.02em] sm:text-[34px]">
+        {s.data.shortTitle}
       </Heading>
-      <p class="mt-2 flex-1 text-muted">{s.data.summary}</p>
-      <span class="mt-5 inline-flex items-center gap-1.5 text-sm font-semibold text-brand-700">
+      <span
+        class:list={['mt-4 block h-[3px] w-12', isPurple(i) ? 'bg-magenta' : 'bg-purple']}
+        aria-hidden="true"
+      ></span>
+      <p class="mt-6 max-w-md text-[17px] font-light text-white/95">{s.data.summary}</p>
+      <Button
+        href={servicePath(s)}
+        variant={isPurple(i) ? 'magenta' : 'purple'}
+        size="lg"
+        spaced
+        class="mt-8"
+        aria-label={`Learn more about ${s.data.shortTitle}`}
+      >
         Learn more
-        <Icon
-          name="arrow-right"
-          class="size-4 transition-transform group-hover:translate-x-0.5 motion-reduce:transition-none"
-        />
-      </span>
+      </Button>
     </li>
   ))}
 </ul>

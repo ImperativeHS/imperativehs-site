@@ -3,158 +3,173 @@ import { Image } from 'astro:assets';
 import logo from '@/assets/images/logo.png';
 import Button from '@/components/ui/Button.astro';
 import Icon from '@/components/ui/Icon.astro';
-import { primaryNav } from '@/config/navigation';
+import { primaryNav, type NavLink } from '@/config/navigation';
 import { site } from '@/config/site';
 import { getServices, servicePath } from '@/lib/content';
 
-const services = (await getServices()).map((s) => ({ label: s.data.shortTitle, href: servicePath(s) }));
+const serviceLinks: NavLink[] = (await getServices()).map((s) => ({
+  label: s.data.shortTitle,
+  href: servicePath(s),
+}));
+const nav = primaryNav.map((item) => ({
+  ...item,
+  children: item.children === 'services' ? serviceLinks : item.children,
+}));
+
 const path = Astro.url.pathname;
-const isCurrent = (href: string) => (href === '/' ? path === '/' : path.startsWith(href));
+const isCurrent = (item: (typeof nav)[number]) =>
+  item.href === '/'
+    ? path === '/'
+    : path.startsWith(item.href) || (item.children ?? []).some((c) => path.startsWith(c.href));
+const external = (item: NavLink) => (item.external ? { target: '_blank', rel: 'noopener' } : {});
 ---
 
-<header class="sticky top-0 z-40 border-b border-line bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85">
-  <div class="hidden bg-brand-800 text-sm text-brand-50 sm:block">
-    <div class="container-page flex items-center justify-between gap-4 py-1.5">
-      <p class="flex items-center gap-2">
-        <Icon name="clock" class="size-4 text-brand-200" />
-        Mon–Fri 9am–7pm · Saturdays by appointment
-      </p>
-      <p class="flex items-center gap-5">
-        <a href={`mailto:${site.email}`} class="hover:text-white hover:underline">
-          {site.email}
-        </a>
-        <a href={site.phone.href} class="font-semibold hover:text-white hover:underline">
-          {site.phone.display}
-        </a>
-      </p>
-    </div>
+<div class="bg-purple text-sm text-white">
+  <div class="container-page flex min-h-10 items-center justify-between gap-4 py-2">
+    <p class="hidden font-light sm:block">Outpatient mental health &amp; in-home care in {site.county}</p>
+    <a
+      href={site.screeningUrl}
+      target="_blank"
+      rel="noopener"
+      class="flex items-center gap-1.5 hover:underline"
+    >
+      Free, confidential mental health screening
+      <Icon name="arrow-right" class="size-3.5" />
+    </a>
   </div>
+</div>
 
-  <div class="container-page flex h-16 items-center justify-between gap-4 lg:h-20">
-    <a href="/" class="flex shrink-0 items-center" aria-label={`${site.name} — home`}>
+<header class="relative bg-blush">
+  <div class="container-page flex items-center justify-between gap-6 py-3 lg:py-4">
+    <a href="/" class="shrink-0" aria-label={`${site.name} — home`}>
       <Image
         src={logo}
         alt=""
-        class="h-10 w-auto lg:h-12"
+        class="h-14 w-auto lg:h-[68px]"
         loading="eager"
-        widths={[160, 320]}
-        sizes="160px"
+        widths={[180, 360]}
+        sizes="180px"
       />
     </a>
 
-    <nav aria-label="Main" class="hidden lg:block">
-      <ul class="flex items-center gap-1">
-        {primaryNav.map((item) =>
-          item.href === '/services/' ? (
-            <li class="group relative">
+    <dl class="hidden flex-1 justify-end gap-12 text-[15px] leading-snug lg:flex xl:gap-16">
+      <div>
+        <dt class="font-heading text-lg font-semibold text-purple uppercase">Email Address</dt>
+        <dd class="mt-1">
+          <a href={`mailto:${site.email}`} class="hover:text-purple">
+            {site.email}
+          </a>
+        </dd>
+      </div>
+      <div>
+        <dt class="font-heading text-lg font-semibold text-purple uppercase">Hours</dt>
+        <dd class="mt-1">
+          {site.hoursSummary.map((line) => (
+            <span class="block">{line}</span>
+          ))}
+        </dd>
+      </div>
+      <div>
+        <dt class="font-heading text-lg font-semibold text-purple uppercase">Call Today</dt>
+        <dd class="mt-1">
+          <a href={site.phone.href} class="font-medium hover:text-purple">
+            {site.phone.display}
+          </a>
+        </dd>
+      </div>
+    </dl>
+
+    <!-- Mobile menu: a native <details> disclosure, so it works without JavaScript. -->
+    <details class="group/menu lg:hidden" data-mobile-menu>
+      <summary
+        class="-mr-2 flex size-12 cursor-pointer list-none items-center justify-center text-magenta [&::-webkit-details-marker]:hidden"
+        aria-label="Menu"
+      >
+        <Icon name="menu" class="size-8 group-open/menu:hidden" strokeWidth={2.5} />
+        <Icon name="x" class="hidden size-8 group-open/menu:block" strokeWidth={2.5} />
+      </summary>
+      <nav
+        aria-label="Mobile"
+        class="absolute inset-x-0 top-full z-50 border-t-[3px] border-magenta bg-white shadow-xl"
+      >
+        <ul class="container-page divide-y divide-line pt-2 pb-28">
+          {nav.map((item) => (
+            <li class="py-1">
               <a
                 href={item.href}
-                class="flex items-center gap-1 rounded-full px-3 py-2 text-[15px] font-medium text-ink hover:bg-brand-50 hover:text-brand-700 aria-[current=page]:text-brand-700"
-                aria-current={isCurrent(item.href) ? 'page' : undefined}
+                class="block py-2.5 font-heading text-xl font-light text-purple uppercase"
+                {...external(item)}
               >
                 {item.label}
-                <Icon
-                  name="chevron-down"
-                  class="size-4 transition-transform group-focus-within:rotate-180 group-hover:rotate-180"
-                />
               </a>
-              <div class="invisible absolute top-full left-0 pt-2 opacity-0 transition group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
-                <ul class="w-72 rounded-2xl border border-line bg-white p-2 shadow-lg">
-                  {services.map((s) => (
+              {item.children && (
+                <ul class="mb-2 border-l-2 border-blush pl-4">
+                  {item.children.map((child) => (
                     <li>
-                      <a
-                        href={s.href}
-                        class="block rounded-xl px-3 py-2.5 text-sm font-medium text-ink hover:bg-brand-50 hover:text-brand-700"
-                      >
-                        {s.label}
+                      <a href={child.href} class="block py-1.5 text-[17px] text-ink">
+                        {child.label}
                       </a>
                     </li>
                   ))}
-                  <li class="mt-1 border-t border-line pt-1">
-                    <a
-                      href="/services/"
-                      class="block rounded-xl px-3 py-2.5 text-sm font-semibold text-brand-700 hover:bg-brand-50"
-                    >
-                      All services
-                    </a>
-                  </li>
                 </ul>
-              </div>
+              )}
             </li>
-          ) : (
-            <li>
-              <a
-                href={item.href}
-                class="rounded-full px-3 py-2 text-[15px] font-medium text-ink hover:bg-brand-50 hover:text-brand-700 aria-[current=page]:text-brand-700"
-                aria-current={isCurrent(item.href) ? 'page' : undefined}
-              >
-                {item.label}
-              </a>
-            </li>
-          ),
-        )}
-      </ul>
-    </nav>
+          ))}
+          <li class="pt-5">
+            <Button href="/request-appointment/" variant="sky" class="w-full">
+              Schedule Appointment
+            </Button>
+          </li>
+        </ul>
+      </nav>
+    </details>
+  </div>
+</header>
 
-    <div class="flex items-center gap-2">
-      <div class="hidden sm:block">
-        <Button href="/request-appointment/" icon="calendar">
-          Request appointment
-        </Button>
-      </div>
-
-      <!-- Mobile menu: a native <details> disclosure, so it works without JavaScript. -->
-      <details class="group/menu lg:hidden" data-mobile-menu>
-        <summary
-          class="flex size-11 cursor-pointer list-none items-center justify-center rounded-full text-brand-800 hover:bg-brand-50 [&::-webkit-details-marker]:hidden"
-          aria-label="Menu"
-        >
-          <Icon name="menu" class="size-6 group-open/menu:hidden" />
-          <Icon name="x" class="hidden size-6 group-open/menu:block" />
-        </summary>
-        <nav
-          aria-label="Mobile"
-          class="absolute inset-x-0 top-full max-h-[calc(100dvh-4rem)] overflow-y-auto border-b border-line bg-white shadow-lg"
-        >
-          <div class="container-page pt-4 pb-24 sm:pb-4">
-            <p class="px-3 pb-1 text-xs font-semibold tracking-wide text-muted uppercase">Services</p>
-            <ul class="mb-3">
-              {services.map((s) => (
+<nav aria-label="Main" class="sticky top-0 z-40 hidden bg-white shadow-[0_2px_10px_rgb(0_0_0/0.08)] lg:block">
+  <div class="container-page flex h-[72px] items-center justify-between gap-6">
+    <ul class="flex items-center gap-7 xl:gap-9">
+      {nav.map((item) => (
+        <li class="group relative">
+          <a
+            href={item.href}
+            class="flex items-center gap-1 py-6 font-heading text-[17px] font-light text-purple uppercase transition-colors hover:text-sky aria-[current=page]:text-sky xl:text-lg"
+            aria-current={isCurrent(item) ? 'page' : undefined}
+            {...external(item)}
+          >
+            {item.label}
+            {item.children && (
+              <Icon
+                name="chevron-down"
+                class="size-3.5 transition-transform group-focus-within:rotate-180 group-hover:rotate-180"
+              />
+            )}
+          </a>
+          {item.children && (
+            <ul class="invisible absolute top-full left-0 w-64 border-t-[3px] border-sky bg-white py-3 opacity-0 shadow-lg transition duration-200 group-focus-within:visible group-focus-within:opacity-100 group-hover:visible group-hover:opacity-100">
+              {item.children.map((child) => (
                 <li>
-                  <a href={s.href} class="block rounded-xl px-3 py-3 font-medium hover:bg-brand-50">
-                    {s.label}
+                  <a
+                    href={child.href}
+                    class="block px-5 py-2 text-[15px] text-ink transition-colors hover:bg-blush hover:text-purple"
+                  >
+                    {child.label}
                   </a>
                 </li>
               ))}
             </ul>
-            <ul class="border-t border-line pt-3">
-              {primaryNav
-                .filter((item) => item.href !== '/services/')
-                .map((item) => (
-                  <li>
-                    <a href={item.href} class="block rounded-xl px-3 py-3 font-medium hover:bg-brand-50">
-                      {item.label}
-                    </a>
-                  </li>
-                ))}
-            </ul>
-            <div class="mt-4 grid gap-2 border-t border-line pt-4">
-              <Button href="/request-appointment/" size="lg" icon="calendar">
-                Request appointment
-              </Button>
-              <Button href={site.phone.href} size="lg" variant="secondary" icon="phone">
-                Call {site.phone.display}
-              </Button>
-            </div>
-          </div>
-        </nav>
-      </details>
-    </div>
+          )}
+        </li>
+      ))}
+    </ul>
+    <Button href="/request-appointment/" variant="sky" size="sm">
+      Schedule Appointment
+    </Button>
   </div>
-</header>
+</nav>
 
 <script>
-  // Close the mobile menu after following an in-page link or pressing Escape.
+  // Close the mobile menu after following a link or pressing Escape.
   const menu = document.querySelector<HTMLDetailsElement>('[data-mobile-menu]');
   if (menu) {
     menu.addEventListener('click', (e) => {

@@ -1,14 +1,27 @@
+import { site } from './site';
+
 export interface NavLink {
   label: string;
   href: string;
+  /** Dropdown items. `'services'` fills the dropdown from src/content/services. */
+  children?: NavLink[] | 'services';
+  external?: boolean;
 }
 
-/** "Services" gets a dropdown of service pages from src/content/services (see Header.astro). */
 export const primaryNav: NavLink[] = [
-  { label: 'Services', href: '/services/' },
+  { label: 'Home', href: '/' },
+  {
+    label: 'About Us',
+    href: '/about/',
+    children: [
+      { label: 'Who We Are', href: '/about/' },
+      { label: 'Our Team', href: '/team/' },
+      { label: 'Refer a Client', href: '/referrals/' },
+    ],
+  },
+  { label: 'Our Services', href: '/services/', children: 'services' },
+  { label: 'Free Assessment', href: site.screeningUrl, external: true },
   { label: 'Insurance', href: '/insurance/' },
-  { label: 'About', href: '/about/' },
-  { label: 'Our Team', href: '/team/' },
   { label: 'Blog', href: '/blog/' },
   { label: 'Contact', href: '/contact/' },
 ];

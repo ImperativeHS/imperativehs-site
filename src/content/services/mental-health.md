@@ -5,19 +5,33 @@ seoTitle: Outpatient Mental Health Care in Hyattsville, MD
 description: Psychiatric evaluations, medication management, therapy, and counseling for children, teens, adults, and families in Hyattsville, MD. Most major insurance accepted.
 summary: Psychiatric evaluations, medication management, and therapy for children, teens, adults, and families — in a judgment-free setting.
 order: 1
+image: ../../assets/images/site/counseling-session.jpg
+imageAlt: A counselor listening to a client during a therapy session
 highlights:
   - title: Psychiatric evaluation
     body: A thorough evaluation of your mental health needs, leading to a personalized treatment plan.
+    image: ../../assets/images/site/evaluation.jpg
+    imageAlt: A clinician comforting a young woman during an appointment
+  - title: Mental health assessment
+    body: Our licensed clinicians perform comprehensive assessments to identify your strengths, challenges, and treatment goals.
+    image: ../../assets/images/site/assessment.jpg
+    imageAlt: A man talking with a clinician in an exam room
   - title: Medication management
     body: Careful review of your current medications, adjustments when needed, and ongoing monitoring and support.
   - title: Psychotherapy
     body: Evidence-based approaches including cognitive behavioral therapy (CBT), dialectical behavior therapy (DBT), and mindfulness-based therapy.
   - title: Individual, group, and family counseling
     body: Support, guidance, and practical coping strategies to help you navigate life’s challenges.
+    image: ../../assets/images/site/family-counseling.jpg
+    imageAlt: Parents and their daughter in a family counseling session
   - title: Children’s and teen therapy
     body: Clinicians trained in child development provide age-appropriate therapy to help young people thrive.
+    image: ../../assets/images/site/family-group.jpg
+    imageAlt: A parent hugging a child during a group session
   - title: Counseling for parents
     body: Strategies and support to strengthen parent–child relationships and manage parenting stress.
+    image: ../../assets/images/site/counseling-parents.jpg
+    imageAlt: A counselor speaking with a couple
 whoWeServe:
   - Children and adolescents
   - Adults

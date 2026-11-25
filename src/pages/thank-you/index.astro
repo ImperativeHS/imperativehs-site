@@ -1,29 +1,28 @@
 ---
+import PageHero from '@/components/sections/PageHero.astro';
 import Button from '@/components/ui/Button.astro';
-import Icon from '@/components/ui/Icon.astro';
 import Section from '@/components/ui/Section.astro';
 import { site } from '@/config/site';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 ---
 
 <BaseLayout title="Thank You" description="We received your submission." noindex>
+  <PageHero title="Thank You" />
   <Section spacing="lg">
-    <div class="mx-auto max-w-xl text-center">
-      <span class="mx-auto flex size-16 items-center justify-center rounded-full bg-brand-100 text-brand-700">
-        <Icon name="check" class="size-8" strokeWidth={2.5} />
-      </span>
-      <h1 class="mt-6 text-4xl font-semibold" data-thanks-title>
-        Thank you — we received your request
-      </h1>
-      <p class="mt-4 text-lg text-muted" data-thanks-body>
+    <div class="mx-auto max-w-2xl text-center">
+      <p class="font-heading text-[30px] font-light text-magenta uppercase" data-thanks-title>
+        We received your request
+      </p>
+      <span class="accent-rule mx-auto" aria-hidden="true"></span>
+      <p class="mt-6 text-lg font-light" data-thanks-body>
         Our team will reach out soon using the contact method you chose. If you need to speak with someone
         sooner, please call us at{' '}
-        <a href={site.phone.href} class="font-semibold text-brand-700 underline">
+        <a href={site.phone.href} class="font-semibold text-sky-dark underline">
           {site.phone.display}
         </a>
         .
       </p>
-      <p class="mt-6 rounded-2xl bg-brand-50 p-4 text-sm text-ink">
+      <p class="mt-8 border-l-4 border-magenta bg-blush p-5 text-left text-[15px]">
         If you are in crisis, call or text{' '}
         <a href={site.crisis.lifeline.href} class="font-semibold underline">
           988
@@ -35,11 +34,11 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
         .
       </p>
       <div class="mt-8 flex justify-center gap-3">
-        <Button href="/" variant="secondary">
+        <Button href="/" variant="purple">
           Back to home
         </Button>
-        <Button href="/services/" variant="ghost">
-          Explore services
+        <Button href="/services/" variant="magenta">
+          Our services
         </Button>
       </div>
     </div>
@@ -50,6 +49,6 @@ import BaseLayout from '@/layouts/BaseLayout.astro';
   // Adjust the copy for general messages (the page is static, so this runs client-side).
   if (new URLSearchParams(location.search).get('form') === 'contact') {
     const title = document.querySelector('[data-thanks-title]');
-    if (title) title.textContent = 'Thank you — your message was sent';
+    if (title) title.textContent = 'Your message was sent';
   }
 </script>

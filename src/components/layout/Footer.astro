@@ -1,24 +1,98 @@
 ---
-import Icon from '@/components/ui/Icon.astro';
+import { getImage } from 'astro:assets';
+import pattern from '@/assets/images/site/pattern-purple.jpg';
 import { footerNav } from '@/config/navigation';
-import { fullAddress, site } from '@/config/site';
+import { site } from '@/config/site';
 import { getServices, servicePath } from '@/lib/content';
 
 const services = await getServices();
 const year = new Date().getFullYear();
+const bg = await getImage({ src: pattern, width: 1300, format: 'webp' });
+const heading = 'font-heading text-2xl font-medium text-sky uppercase';
+const small = 'font-heading text-lg font-medium text-white uppercase';
 ---
 
-<footer class="bg-brand-950 text-brand-100">
-  <div class="border-b border-white/10 bg-brand-900">
-    <div class="container-page flex flex-col gap-2 py-4 text-sm sm:flex-row sm:items-center sm:gap-3">
-      <Icon name="life-buoy" class="size-5 text-brand-200" />
-      <p>
-        <strong class="font-semibold text-white">In crisis?</strong> Call or text{' '}
-        <a href={site.crisis.lifeline.href} class="font-semibold text-white underline underline-offset-2">
+<footer class="text-white">
+  <div
+    class="bg-plum bg-cover bg-center"
+    style={`background-image: radial-gradient(circle at center, rgb(122 0 119 / 0.55), rgb(76 0 88 / 0.85)), url(${bg.src})`}
+  >
+    <div class="container-page py-14 sm:py-16">
+      <div class="grid gap-10 text-center md:grid-cols-3">
+        <div>
+          <h2 class={heading}>Email Address</h2>
+          <p class="mt-3 font-light">
+            <a href={`mailto:${site.email}`} class="hover:underline">
+              {site.email}
+            </a>
+          </p>
+        </div>
+        <div>
+          <h2 class={heading}>Office Phone</h2>
+          <p class="mt-3 font-light">
+            <a href={site.phone.href} class="hover:underline">
+              {site.phone.display}
+            </a>
+          </p>
+        </div>
+        <div>
+          <h2 class={heading}>Office Address</h2>
+          <p class="mt-3 font-light">
+            <a href={site.mapsUrl} target="_blank" rel="noopener" class="hover:underline">
+              <address class="not-italic">
+                {site.address.street}
+                <br />
+                {`${site.address.city}, ${site.address.region} ${site.address.postalCode}`}
+              </address>
+            </a>
+          </p>
+        </div>
+      </div>
+
+      <div class="mt-12 grid gap-10 border-t border-white/15 pt-10 text-[15px] sm:grid-cols-3">
+        <div>
+          <h2 class={small}>Hours</h2>
+          <dl class="mt-3 space-y-1 font-light">
+            {site.hours.map((h) => (
+              <div>
+                <dt class="inline font-normal">{h.label}:</dt> <dd class="inline">{h.value}</dd>
+              </div>
+            ))}
+          </dl>
+        </div>
+        <nav aria-label="Services">
+          <h2 class={small}>Our Services</h2>
+          <ul class="mt-3 space-y-1 font-light">
+            {services.map((s) => (
+              <li>
+                <a href={servicePath(s)} class="hover:underline">
+                  {s.data.shortTitle}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+        <nav aria-label="Footer">
+          <h2 class={small}>Quick Links</h2>
+          <ul class="mt-3 grid grid-cols-2 gap-x-4 gap-y-1 font-light whitespace-nowrap sm:grid-cols-1 lg:grid-cols-2">
+            {footerNav.map((item) => (
+              <li>
+                <a href={item.href} class="hover:underline">
+                  {item.label}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </nav>
+      </div>
+
+      <p class="mt-12 rounded-[3px] bg-white/10 px-5 py-4 text-center text-[15px] font-light">
+        <span class="font-semibold">In crisis?</span> Call or text{' '}
+        <a href={site.crisis.lifeline.href} class="font-semibold underline underline-offset-2">
           {site.crisis.lifeline.display}
         </a>{' '}
-        (Suicide &amp; Crisis Lifeline), available 24/7. In an emergency, call{' '}
-        <a href={site.crisis.emergency.href} class="font-semibold text-white underline underline-offset-2">
+        any time for the Suicide &amp; Crisis Lifeline. In an emergency, call{' '}
+        <a href={site.crisis.emergency.href} class="font-semibold underline underline-offset-2">
           {site.crisis.emergency.display}
         </a>
         .
@@ -26,84 +100,9 @@ const year = new Date().getFullYear();
     </div>
   </div>
 
-  <div class="container-page grid gap-10 py-14 sm:grid-cols-2 lg:grid-cols-4">
-    <div class="lg:col-span-1">
-      <p class="font-display text-xl font-semibold text-white">{site.name}</p>
-      <p class="mt-3 text-sm leading-relaxed">{site.tagline}</p>
-    </div>
-
-    <div>
-      <h2 class="font-sans text-sm font-semibold tracking-wide text-white uppercase">Contact</h2>
-      <ul class="mt-4 space-y-3 text-sm">
-        <li>
-          <a href={site.phone.href} class="flex items-center gap-2 hover:text-white">
-            <Icon name="phone" class="size-4 text-brand-300" />
-            {site.phone.display}
-          </a>
-        </li>
-        <li>
-          <a href={`mailto:${site.email}`} class="flex items-center gap-2 hover:text-white">
-            <Icon name="mail" class="size-4 text-brand-300" />
-            {site.email}
-          </a>
-        </li>
-        <li>
-          <a
-            href={site.mapsUrl}
-            class="flex items-start gap-2 hover:text-white"
-            rel="noopener"
-            target="_blank"
-          >
-            <Icon name="map-pin" class="mt-0.5 size-4 text-brand-300" />
-            <address class="not-italic">{fullAddress}</address>
-          </a>
-        </li>
-      </ul>
-    </div>
-
-    <div>
-      <h2 class="font-sans text-sm font-semibold tracking-wide text-white uppercase">Hours</h2>
-      <dl class="mt-4 space-y-2 text-sm">
-        {site.hours.map((h) => (
-          <div>
-            <dt class="font-medium text-white">{h.label}</dt>
-            <dd>{h.value}</dd>
-          </div>
-        ))}
-      </dl>
-    </div>
-
-    <div class="grid grid-cols-2 gap-8 sm:col-span-2 lg:col-span-1 lg:grid-cols-1">
-      <nav aria-label="Services">
-        <h2 class="font-sans text-sm font-semibold tracking-wide text-white uppercase">Services</h2>
-        <ul class="mt-4 space-y-2 text-sm">
-          {services.map((s) => (
-            <li>
-              <a href={servicePath(s)} class="hover:text-white hover:underline">
-                {s.data.shortTitle}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-      <nav aria-label="Footer">
-        <h2 class="font-sans text-sm font-semibold tracking-wide text-white uppercase">Quick links</h2>
-        <ul class="mt-4 space-y-2 text-sm">
-          {footerNav.map((item) => (
-            <li>
-              <a href={item.href} class="hover:text-white hover:underline">
-                {item.label}
-              </a>
-            </li>
-          ))}
-        </ul>
-      </nav>
-    </div>
-  </div>
-
-  <div class="border-t border-white/10">
-    <p class="container-page py-6 pb-24 text-xs text-brand-300 sm:pb-6">
-      © {year} {site.name}. All rights reserved.
+  <div class="bg-purple">
+    <p class="container-page py-4 pb-24 font-title text-[15px] uppercase sm:pb-4">
+      © Copyright {year} | {site.name} | All rights reserved.
     </p>
   </div>
 </footer>

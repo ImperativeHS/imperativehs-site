@@ -7,9 +7,10 @@ import Faq from '@/components/sections/Faq.astro';
 import PageHero from '@/components/sections/PageHero.astro';
 import ServiceCards from '@/components/sections/ServiceCards.astro';
 import Button from '@/components/ui/Button.astro';
-import Icon from '@/components/ui/Icon.astro';
 import Section from '@/components/ui/Section.astro';
 import SectionHeading from '@/components/ui/SectionHeading.astro';
+import FeatureRows from '@/components/sections/FeatureRows.astro';
+import ScreeningCallout from '@/components/sections/ScreeningCallout.astro';
 import { site } from '@/config/site';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import { getServices, servicePath, type Service } from '@/lib/content';
@@ -43,43 +44,30 @@ const jsonLd = [
 
 <BaseLayout title={data.seoTitle} description={data.description} jsonLd={jsonLd}>
   <PageHero title={data.title} lead={data.summary} breadcrumbs={crumbs}>
-    <Button href="/request-appointment/" size="lg" icon="calendar">
-      Request an appointment
+    <Button href="/request-appointment/" variant="sky" icon="calendar-check">
+      Schedule appointment
     </Button>
-    <Button href={site.phone.href} size="lg" variant="secondary" icon="phone">
-      Call {site.phone.display}
-    </Button>
+    <a href={site.phone.href} class="font-heading text-xl text-purple hover:text-sky">
+      or call {site.phone.display}
+    </a>
   </PageHero>
 
-  {data.highlights.length > 0 && (
-    <Section spacing="sm">
-      <ul class:list={['grid gap-5 sm:grid-cols-2', data.highlights.length % 3 === 0 && 'lg:grid-cols-3']}>
-        {data.highlights.map((h) => (
-          <li class="rounded-3xl bg-white p-6 shadow-sm ring-1 ring-line">
-            <span class="flex size-9 items-center justify-center rounded-xl bg-brand-100 text-brand-700">
-              <Icon name="check" class="size-5" strokeWidth={2.5} />
-            </span>
-            <h2 class="mt-4 font-sans text-lg font-semibold text-ink">{h.title}</h2>
-            <p class="mt-1.5 text-muted">{h.body}</p>
-          </li>
-        ))}
-      </ul>
-    </Section>
-  )}
+  {data.highlights.length > 0 && <FeatureRows items={data.highlights} />}
 
-  <Section spacing="sm">
-    <div class="grid gap-12 lg:grid-cols-[1fr_22rem]">
+  <Section>
+    <div class="grid gap-12 lg:grid-cols-[1fr_22rem] lg:gap-16">
       <article class="prose-ihs prose-lg">
         <Content />
       </article>
-      <div class="space-y-6 lg:sticky lg:top-28 lg:self-start">
+      <div class="space-y-8 lg:sticky lg:top-24 lg:self-start">
         {data.whoWeServe.length > 0 && (
-          <aside class="rounded-3xl bg-brand-50 p-7 ring-1 ring-brand-100">
-            <h2 class="text-xl font-semibold">Who we serve</h2>
-            <ul class="mt-4 space-y-3">
+          <aside class="bg-purple p-7 text-white">
+            <h2 class="text-2xl font-semibold">Who We Serve</h2>
+            <span class="accent-rule" aria-hidden="true"></span>
+            <ul class="mt-5 space-y-2 font-light">
               {data.whoWeServe.map((item) => (
-                <li class="flex gap-3 text-ink">
-                  <Icon name="check" class="mt-1 size-4 text-brand-600" strokeWidth={2.5} />
+                <li class="flex gap-3">
+                  <span class="mt-3 size-1.5 shrink-0 bg-magenta" aria-hidden="true"></span>
                   {item}
                 </li>
               ))}
@@ -91,10 +79,12 @@ const jsonLd = [
     </div>
   </Section>
 
+  <ScreeningCallout tone="magenta" />
+
   {data.faqs.length > 0 && (
-    <Section tone="tint" labelledby="faq-heading">
+    <Section tone="cloud" labelledby="faq-heading">
       <div class="mx-auto max-w-3xl">
-        <SectionHeading id="faq-heading" title="Frequently asked questions" align="center" />
+        <SectionHeading id="faq-heading" title="Frequently Asked Questions" align="center" rule />
         <div class="mt-10">
           <Faq items={data.faqs} />
         </div>
@@ -102,12 +92,10 @@ const jsonLd = [
     </Section>
   )}
 
-  <Section labelledby="other-services-heading">
-    <SectionHeading id="other-services-heading" title="Other services" />
-    <div class="mt-8">
-      <ServiceCards exclude={service.id} />
-    </div>
-  </Section>
+  <section aria-labelledby="other-services-heading" class="pt-16 sm:pt-20">
+    <SectionHeading id="other-services-heading" title="Our Other Services" align="center" class="mb-10" />
+    <ServiceCards exclude={service.id} />
+  </section>
 
   <CtaBand />
 </BaseLayout>

@@ -5,9 +5,13 @@ seoTitle: Psychiatric Rehabilitation Program (PRP) in Maryland
 description: Our Psychiatric Rehabilitation Program helps children, teens, and adults with serious mental health conditions build life skills and independence — on-site, in the community, or virtually.
 summary: Community-based support that helps children, teens, and adults with serious mental health conditions build skills, confidence, and independence.
 order: 2
+image: ../../assets/images/site/group-session.jpg
+imageAlt: A peer support group talking in a circle
 highlights:
   - title: Personalized recovery plans
     body: Individualized plans built around your strengths, goals, and challenges, so every step forward is meaningful.
+    image: ../../assets/images/site/one-on-one.jpg
+    imageAlt: A man meeting one-on-one with a clinician
   - title: Community integration
     body: Develop the life skills needed for independent living and build real connections in your community.
   - title: Flexible service delivery

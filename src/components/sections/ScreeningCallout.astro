@@ -1,0 +1,31 @@
+---
+import Button from '@/components/ui/Button.astro';
+import { site } from '@/config/site';
+
+interface Props {
+  tone?: 'purple' | 'magenta';
+}
+
+const { tone = 'purple' } = Astro.props;
+---
+
+<section class="bg-white py-16 text-center sm:py-20" aria-labelledby="screening-heading">
+  <div class="container-page">
+    <h2
+      id="screening-heading"
+      class:list={[
+        'text-[32px] font-semibold sm:text-[40px]',
+        tone === 'purple' ? 'text-purple' : 'text-magenta',
+      ]}
+    >
+      Simple and Convenient Process
+    </h2>
+    <p class="mx-auto mt-4 max-w-xl text-lg font-light">
+      Answer a few questions about your symptoms and mental health history. It takes just a few minutes and
+      helps us understand your needs.
+    </p>
+    <Button href={site.screeningUrl} target="_blank" rel="noopener" variant="sky" spaced class="mt-8">
+      Start Your Free Assessment
+    </Button>
+  </div>
+</section>
