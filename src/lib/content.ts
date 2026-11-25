@@ -19,3 +19,17 @@ export async function getPosts(): Promise<Post[]> {
 
 const dateFormatter = new Intl.DateTimeFormat('en-US', { dateStyle: 'long', timeZone: 'UTC' });
 export const formatDate = (date: Date) => dateFormatter.format(date);
+
+/** Estimated reading time in minutes (~220 words per minute). */
+export function readingMinutes(post: Post): number {
+  const words = (post.body ?? '').split(/\s+/).filter(Boolean).length;
+  return Math.max(1, Math.round(words / 220));
+}
+
+/** Up to `count` other posts, same category first, then the most recent. */
+export function relatedPosts(post: Post, all: Post[], count = 3): Post[] {
+  const others = all.filter((p) => p.id !== post.id);
+  const sameCategory = others.filter((p) => p.data.category === post.data.category);
+  const rest = others.filter((p) => p.data.category !== post.data.category);
+  return [...sameCategory, ...rest].slice(0, count);
+}
