@@ -122,8 +122,8 @@ Set these as **secrets** on the Cloudflare Worker (Dashboard → Workers → imp
    Cloudflare before switching nameservers.
 5. Enable **Web Analytics** for the site in Cloudflare (cookie-free, no ad tracking).
 
-The Astro adapter also provisions a `SESSION` KV namespace on first deploy. The site doesn't use
-sessions, so this is harmless and free.
+Astro sessions are turned off (`session: false` in `astro.config.mjs`), so the Worker needs no KV
+namespace. Without that setting, preview uploads fail trying to create one.
 
 ## Git workflow
 

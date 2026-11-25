@@ -14,6 +14,8 @@ export default defineConfig({
   // with `export const prerender = false` (the form endpoint).
   output: 'static',
   adapter: cloudflare({ imageService: 'compile', prerenderEnvironment: 'node' }),
+  // No server sessions are used; this also stops the adapter from requiring a KV namespace.
+  session: false,
   integrations: [
     sitemap({
       filter: (page) => !SITEMAP_EXCLUDE.some((path) => page.endsWith(path)),
