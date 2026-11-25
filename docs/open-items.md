@@ -42,12 +42,25 @@ the answer was applied. Search the code for `TODO(content)` to find the spots ea
 - [ ] **Lovable apps:** check whether the screening tool (`intake.imperativehs.com`) and its database are
       covered by a BAA, since people enter PHQ-9/GAD-7 answers there.
 
+- [ ] **Spam protection (Turnstile):** create a free Turnstile widget in Cloudflare (Dashboard → Turnstile)
+      for `imperativehs.com` and add `PUBLIC_TURNSTILE_SITE_KEY` (build variable) and
+      `TURNSTILE_SECRET_KEY` (secret) to the Worker. The forms switch it on automatically.
+- [ ] **Rate limiting:** once the domain is on Cloudflare, add a WAF rate-limiting rule for
+      `/api/forms/*` (e.g. 5 requests per minute per IP). The free plan includes one rule.
+- [ ] **GitHub branch protection:** require a pull request and passing CI before merging to `main`
+      (Settings → Branches → Add rule). Also decide whether the repo should be private.
+- [ ] **Known build-time advisory:** `npm audit` reports a moderate issue in `postcss-selector-parser`
+      (via `@tailwindcss/typography`). It only runs during the build, not on the live site; Dependabot
+      will pick up the fix when one is released.
+
 ## Integrations (later)
 
 - [ ] **Zocdoc "Book online" button:** Zocdoc offers one for practice websites. Could be added as a link or
       button on `/request-appointment/`.
 - [ ] **ICANotes:** ask the ICANotes rep whether they offer an embeddable appointment-request or intake form.
 - [ ] **Submissions dashboard:** revisit once form volume is known.
+- [ ] **Review/comment widget:** a click-to-comment feedback tool for reviewers, loaded on preview links
+      only (never production). Waiting on which tool to use.
 
 ## Launch checklist
 

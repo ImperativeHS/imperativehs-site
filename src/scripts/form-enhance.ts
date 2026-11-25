@@ -57,6 +57,7 @@ export function enhanceForms() {
           method: 'POST',
           body: new FormData(form),
           headers: { Accept: 'application/json' },
+          signal: AbortSignal.timeout(20_000),
         });
         const result = (await response.json().catch(() => ({ ok: false }))) as SubmitResult;
 

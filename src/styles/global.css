@@ -12,11 +12,12 @@
 @theme {
   --font-sans: 'Raleway Variable', ui-sans-serif, system-ui, sans-serif;
   --font-heading: 'Oswald Variable', 'Arial Narrow', ui-sans-serif, sans-serif;
-  --font-title: 'Open Sans Variable', ui-sans-serif, system-ui, sans-serif;
+  --font-title: 'Open Sans', ui-sans-serif, system-ui, sans-serif; /* weight 800 only */
 
   --color-purple: #55286d;
   --color-purple-dark: #3e1c51;
   --color-plum: #4c0058;
+  --color-orchid: #7a0077; /* center of the purple pattern's glow */
   --color-magenta: #ce49bf;
   --color-magenta-dark: #a8369b;
   --color-sky: #1396cc;
@@ -63,6 +64,13 @@
     html {
       scroll-behavior: smooth;
     }
+  }
+}
+
+/* Native cross-page fade between pages (no JavaScript; ignored by browsers without support). */
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
   }
 }
 

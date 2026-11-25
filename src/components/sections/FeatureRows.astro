@@ -5,8 +5,8 @@
  * into a purple patterned band.
  */
 import type { ImageMetadata } from 'astro';
-import { getImage, Image } from 'astro:assets';
-import pattern from '@/assets/images/site/pattern-purple.jpg';
+import { Image } from 'astro:assets';
+import PatternBackground from '@/components/ui/PatternBackground.astro';
 
 interface Feature {
   title: string;
@@ -30,8 +30,6 @@ for (const item of items) {
   else if (last?.kind === 'band') last.items.push(item);
   else groups.push({ kind: 'band', items: [item] });
 }
-
-const bg = await getImage({ src: pattern, width: 1300, format: 'webp' });
 ---
 
 {groups.map((group) =>
@@ -59,10 +57,8 @@ const bg = await getImage({ src: pattern, width: 1300, format: 'webp' });
       </div>
     </section>
   ) : (
-    <section
-      class="bg-plum bg-cover bg-center text-white"
-      style={`background-image: radial-gradient(circle at center, rgb(122 0 119 / 0.5), rgb(76 0 88 / 0.85)), url(${bg.src})`}
-    >
+    <section class="relative isolate overflow-hidden text-white">
+      <PatternBackground />
       <div
         class:list={[
           'container-page grid gap-12 py-16 text-center sm:py-20',

@@ -16,6 +16,26 @@ export default defineConfig({
   adapter: cloudflare({ imageService: 'compile', prerenderEnvironment: 'node' }),
   // No server sessions are used; this also stops the adapter from requiring a KV namespace.
   session: false,
+  // Load pages in the background when a link is hovered or scrolls into view, so clicks feel instant.
+  prefetch: { prefetchAll: true, defaultStrategy: 'viewport' },
+  security: {
+    // Astro adds a CSP <meta> tag with hashes for its own scripts and styles. Anything loaded from
+    // another origin must be listed here. frame-ancestors can't be set in a meta tag; see public/_headers.
+    csp: {
+      directives: [
+        "default-src 'self'",
+        "img-src 'self' data:",
+        "font-src 'self'",
+        "connect-src 'self'",
+        'frame-src https://challenges.cloudflare.com',
+        "form-action 'self'",
+        "base-uri 'self'",
+        "object-src 'none'",
+        'upgrade-insecure-requests',
+      ],
+      scriptDirective: { resources: ["'self'", 'https://challenges.cloudflare.com'] },
+    },
+  },
   integrations: [
     sitemap({
       filter: (page) => !SITEMAP_EXCLUDE.some((path) => page.endsWith(path)),

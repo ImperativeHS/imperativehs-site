@@ -7,6 +7,7 @@ import { TURNSTILE_SECRET_KEY } from 'astro:env/server';
 
 export const turnstileEnabled = Boolean(TURNSTILE_SECRET_KEY && PUBLIC_TURNSTILE_SITE_KEY);
 
+/** Returns false for a failed check; throws if Turnstile itself can't be reached. */
 export async function verifyTurnstile(token: string | null, remoteIp: string | null): Promise<boolean> {
   if (!turnstileEnabled) return true;
   if (!token) return false;
@@ -19,7 +20,9 @@ export async function verifyTurnstile(token: string | null, remoteIp: string | n
   const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
     method: 'POST',
     body,
+    signal: AbortSignal.timeout(5_000),
   });
+  if (!response.ok) throw new Error(`Turnstile responded ${response.status}`);
   const result = (await response.json()) as { success?: boolean };
   return result.success === true;
 }

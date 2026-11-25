@@ -41,19 +41,24 @@ export const BEST_TIME_OPTIONS = [
   { value: 'evening', label: 'Evening' },
 ] as const satisfies Option[];
 
-const name = z.string().trim().min(2, 'Please enter a name.').max(120);
+// Single-line fields may not contain line breaks or other control characters.
+const SINGLE_LINE = /^[^\p{Cc}]*$/u;
+const singleLine = 'Please remove line breaks from this field.';
+
+const name = z.string().trim().min(2, 'Please enter a name.').max(120).regex(SINGLE_LINE, singleLine);
 const phone = z
   .string()
   .trim()
   .min(7, 'Please enter a phone number.')
   .max(30)
-  .regex(/^[0-9+().\-\s]+$/, 'Please enter a valid phone number.');
+  .regex(/^[0-9+().\- ]+$/, 'Please enter a valid phone number.');
 const email = z.string().trim().max(200).pipe(z.email('Please enter a valid email address.'));
 const optionalText = (max: number) =>
   z
     .string()
     .trim()
     .max(max)
+    .regex(SINGLE_LINE, singleLine)
     .optional()
     .transform((v) => v || undefined);
 const optionalEmail = z

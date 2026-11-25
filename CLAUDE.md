@@ -20,6 +20,9 @@ Read `README.md` first. It covers the structure, content editing, forms, and dep
 - Don't add third-party trackers, ad pixels, or chat widgets. This is a healthcare site, and anything that sees
   form or page data needs a BAA.
 - Respect `prefers-reduced-motion`; keep animation subtle.
+- A Content Security Policy is enforced in production: no inline `style="…"` attributes or unprocessed inline
+  scripts. New third-party origins must be added to `security.csp` in `astro.config.mjs`. Test with
+  `npm run preview`, since the policy is off in `npm run dev`.
 
 ## Before opening a PR
 

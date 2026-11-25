@@ -110,6 +110,7 @@ const specialties = [
           widths={[480, 720, 1000]}
           sizes="(min-width: 768px) 576px, 100vw"
           loading={i === 0 ? 'eager' : 'lazy'}
+          fetchpriority={i === 0 ? 'high' : 'auto'}
           class="aspect-[16/9] w-full object-cover"
         />
         <h2 class="mt-8 text-[32px] font-light tracking-[0.02em] sm:text-[36px]">{block.title}</h2>

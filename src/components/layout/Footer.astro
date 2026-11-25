@@ -1,22 +1,18 @@
 ---
-import { getImage } from 'astro:assets';
-import pattern from '@/assets/images/site/pattern-purple.jpg';
+import PatternBackground from '@/components/ui/PatternBackground.astro';
 import { footerNav } from '@/config/navigation';
 import { site } from '@/config/site';
 import { getServices, servicePath } from '@/lib/content';
 
 const services = await getServices();
 const year = new Date().getFullYear();
-const bg = await getImage({ src: pattern, width: 1300, format: 'webp' });
 const heading = 'font-heading text-2xl font-medium text-sky uppercase';
 const small = 'font-heading text-lg font-medium text-white uppercase';
 ---
 
 <footer class="text-white">
-  <div
-    class="bg-plum bg-cover bg-center"
-    style={`background-image: radial-gradient(circle at center, rgb(122 0 119 / 0.55), rgb(76 0 88 / 0.85)), url(${bg.src})`}
-  >
+  <div class="relative isolate overflow-hidden">
+    <PatternBackground />
     <div class="container-page py-14 sm:py-16">
       <div class="grid gap-10 text-center md:grid-cols-3">
         <div>
